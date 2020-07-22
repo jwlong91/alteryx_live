@@ -1,0 +1,1342 @@
+<?xml version="1.0"?>
+<AlteryxDocument yxmdVer="2019.2">
+  <Nodes>
+    <Node ToolID="1">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.DbFileInput.DbFileInput">
+        <Position x="54" y="318" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <Passwords />
+          <File OutputFileName="FileName" RecordLimit="" SearchSubDirs="False" FileFormat="0">C:\Users\justin.long\Downloads\names\yob****.txt</File>
+          <FormatSpecificOptions>
+            <CodePage>28591</CodePage>
+            <Delimeter>,</Delimeter>
+            <IgnoreErrors>False</IgnoreErrors>
+            <FieldLen>254</FieldLen>
+            <AllowShareWrite>False</AllowShareWrite>
+            <HeaderRow>False</HeaderRow>
+            <IgnoreQuotes>DoubleQuotes</IgnoreQuotes>
+            <ImportLine>1</ImportLine>
+          </FormatSpecificOptions>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText>yob****.txt</DefaultAnnotationText>
+          <Left value="False" />
+        </Annotation>
+        <MetaInfo connection="Output">
+          <RecordInfo>
+            <Field name="Field_1" size="254" source="File: C:\Users\justin.long\Downloads\names\yob****.txt" type="V_String" />
+            <Field name="Field_2" size="254" source="File: C:\Users\justin.long\Downloads\names\yob****.txt" type="V_String" />
+            <Field name="Field_3" size="254" source="File: C:\Users\justin.long\Downloads\names\yob****.txt" type="V_String" />
+            <Field name="FileName" size="254" source="File: FileName" type="V_WString" />
+          </RecordInfo>
+        </MetaInfo>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxDbFileInput" />
+    </Node>
+    <Node ToolID="3">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.AlteryxSelect.AlteryxSelect">
+        <Position x="270" y="318" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <OrderChanged value="False" />
+          <CommaDecimal value="False" />
+          <SelectFields>
+            <SelectField field="Field_1" selected="True" rename="Name" />
+            <SelectField field="Field_2" selected="True" rename="Gender" />
+            <SelectField field="Field_3" selected="True" rename="Births" type="Int64" size="8" />
+            <SelectField field="FileName" selected="False" rename="File" />
+            <SelectField field="*Unknown" selected="True" />
+          </SelectFields>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>Rename fields</AnnotationText>
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+        <MetaInfo connection="Output">
+          <RecordInfo>
+            <Field name="Name" size="254" source="File: C:\Users\justin.long\Downloads\names\yob****.txt" type="V_String" />
+            <Field name="Gender" size="254" source="Formula: IF [Field_2]='F' THEN 'Female'&#xA;ELSE 'Male'&#xA;ENDIF" type="V_String" />
+            <Field name="Births" source="File: C:\Users\justin.long\Downloads\names\yob****.txt" type="Int64" />
+            <Field name="Year" source="Formula: ToNumber(Right([FileName], 4))" type="Int16" />
+          </RecordInfo>
+        </MetaInfo>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxSelect" />
+    </Node>
+    <Node ToolID="4">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.Formula.Formula">
+        <Position x="162" y="318" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <FormulaFields>
+            <FormulaField expression="ToNumber(Right([FileName], 4))" field="Year" size="2" type="Int16" />
+            <FormulaField expression="IF [Field_2]='F' THEN 'Female'&#xA;ELSE 'Male'&#xA;ENDIF" field="Field_2" size="254" type="V_String" />
+          </FormulaFields>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>Calculate year and gender</AnnotationText>
+          <DefaultAnnotationText>Year = ToNumber(Right([FileName], 4))
+Field_2 = IF [Field_2]='F' THEN 'Female'
+E...</DefaultAnnotationText>
+          <Left value="False" />
+        </Annotation>
+        <MetaInfo connection="Output">
+          <RecordInfo>
+            <Field name="Field_1" size="254" source="File: C:\Users\justin.long\Downloads\names\yob****.txt" type="V_String" />
+            <Field name="Field_2" size="254" source="Formula: IF [Field_2]='F' THEN 'Female'&#xA;ELSE 'Male'&#xA;ENDIF" type="V_String" />
+            <Field name="Field_3" size="254" source="File: C:\Users\justin.long\Downloads\names\yob****.txt" type="V_String" />
+            <Field name="FileName" size="254" source="File: FileName" type="V_WString" />
+            <Field name="Year" source="Formula: ToNumber(Right([FileName], 4))" type="Int16" />
+          </RecordInfo>
+        </MetaInfo>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxFormula" />
+    </Node>
+    <Node ToolID="7">
+      <GuiSettings Plugin="AlteryxSpatialPluginsGui.Summarize.Summarize">
+        <Position x="474" y="414" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <SummarizeFields>
+            <SummarizeField field="Name" action="GroupBy" rename="Name" />
+            <SummarizeField field="Gender" action="GroupBy" rename="Gender" />
+          </SummarizeFields>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>Get unique list of names and genders</AnnotationText>
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+        <MetaInfo connection="Output">
+          <RecordInfo>
+            <Field name="Name" size="254" source="Summarize: GroupBy - Name" type="V_String" />
+            <Field name="Gender" size="254" source="Summarize: GroupBy - Gender" type="V_String" />
+          </RecordInfo>
+          <SortInfo>
+            <Field field="Name" order="Asc" />
+            <Field field="Gender" order="Asc" />
+          </SortInfo>
+        </MetaInfo>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxSpatialPluginsEngine.dll" EngineDllEntryPoint="AlteryxSummarize" />
+    </Node>
+    <Node ToolID="9">
+      <GuiSettings Plugin="AlteryxSpatialPluginsGui.Summarize.Summarize">
+        <Position x="474" y="546" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <SummarizeFields>
+            <SummarizeField field="Year" action="GroupBy" rename="Year" />
+          </SummarizeFields>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>Get unique list of years</AnnotationText>
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+        <MetaInfo connection="Output">
+          <RecordInfo>
+            <Field name="Year" source="Summarize: GroupBy - Year" type="Int16" />
+          </RecordInfo>
+          <SortInfo>
+            <Field field="Year" order="Asc" />
+          </SortInfo>
+        </MetaInfo>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxSpatialPluginsEngine.dll" EngineDllEntryPoint="AlteryxSummarize" />
+    </Node>
+    <Node ToolID="11">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.AppendFields.AppendFields">
+        <Position x="618" y="426" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <CartesianMode>Allow</CartesianMode>
+          <SelectConfiguration>
+            <Configuration outputConnection="Output">
+              <OrderChanged value="False" />
+              <CommaDecimal value="False" />
+              <SelectFields>
+                <SelectField field="*Unknown" selected="True" />
+              </SelectFields>
+            </Configuration>
+          </SelectConfiguration>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>Append years to names and genders</AnnotationText>
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+        <MetaInfo connection="Output">
+          <RecordInfo>
+            <Field name="Name" size="254" source="Summarize: GroupBy - Name" type="V_String" />
+            <Field name="Gender" size="254" source="Summarize: GroupBy - Gender" type="V_String" />
+            <Field name="Year" source="Summarize: GroupBy - Year" type="Int16" />
+          </RecordInfo>
+        </MetaInfo>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxAppendFields" />
+    </Node>
+    <Node ToolID="13">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.Join.Join">
+        <Position x="750" y="318" />
+      </GuiSettings>
+      <Properties>
+        <Configuration joinByRecordPos="False">
+          <JoinInfo connection="Left">
+            <Field field="Name" />
+            <Field field="Gender" />
+            <Field field="Year" />
+          </JoinInfo>
+          <JoinInfo connection="Right">
+            <Field field="Name" />
+            <Field field="Gender" />
+            <Field field="Year" />
+          </JoinInfo>
+          <SelectConfiguration>
+            <Configuration outputConnection="Join">
+              <OrderChanged value="False" />
+              <CommaDecimal value="False" />
+              <SelectFields>
+                <SelectField field="Right_Name" selected="False" rename="Right_Name" input="Right_" />
+                <SelectField field="Right_Gender" selected="False" rename="Right_Gender" input="Right_" />
+                <SelectField field="Right_Year" selected="False" rename="Right_Year" input="Right_" />
+                <SelectField field="*Unknown" selected="True" />
+              </SelectFields>
+            </Configuration>
+          </SelectConfiguration>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>Join on name, gender, and year</AnnotationText>
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+        <MetaInfo connection="Left">
+          <RecordInfo>
+            <Field name="Name" size="254" source="File: C:\Users\justin.long\Downloads\names\yob****.txt" type="V_String" />
+            <Field name="Gender" size="254" source="Formula: IF [Field_2]='F' THEN 'Female'&#xA;ELSE 'Male'&#xA;ENDIF" type="V_String" />
+            <Field name="Births" source="File: C:\Users\justin.long\Downloads\names\yob****.txt" type="Int64" />
+            <Field name="Year" source="Formula: ToNumber(Right([FileName], 4))" type="Int16" />
+          </RecordInfo>
+          <SortInfo noProgress="True">
+            <Field field="Name" />
+            <Field field="Gender" />
+            <Field field="Year" />
+          </SortInfo>
+        </MetaInfo>
+        <MetaInfo connection="Join">
+          <RecordInfo>
+            <Field name="Name" size="254" source="File: C:\Users\justin.long\Downloads\names\yob****.txt" type="V_String" />
+            <Field name="Gender" size="254" source="Formula: IF [Field_2]='F' THEN 'Female'&#xA;ELSE 'Male'&#xA;ENDIF" type="V_String" />
+            <Field name="Births" source="File: C:\Users\justin.long\Downloads\names\yob****.txt" type="Int64" />
+            <Field name="Year" source="Formula: ToNumber(Right([FileName], 4))" type="Int16" />
+          </RecordInfo>
+          <SortInfo>
+            <Field field="Name" order="" />
+            <Field field="Gender" order="" />
+            <Field field="Year" order="" />
+          </SortInfo>
+        </MetaInfo>
+        <MetaInfo connection="Right">
+          <RecordInfo>
+            <Field name="Name" size="254" source="Summarize: GroupBy - Name" type="V_String" />
+            <Field name="Gender" size="254" source="Summarize: GroupBy - Gender" type="V_String" />
+            <Field name="Year" source="Summarize: GroupBy - Year" type="Int16" />
+          </RecordInfo>
+          <SortInfo noProgress="True">
+            <Field field="Name" />
+            <Field field="Gender" />
+            <Field field="Year" />
+          </SortInfo>
+        </MetaInfo>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxJoin" />
+    </Node>
+    <Node ToolID="14">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.Union.Union">
+        <Position x="1014" y="318" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <ByName_ErrorMode>Warning</ByName_ErrorMode>
+          <ByName_OutputMode>All</ByName_OutputMode>
+          <Mode>ByName</Mode>
+          <SetOutputOrder value="False" />
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>Union back in names and years that had no births</AnnotationText>
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+        <MetaInfo connection="Output">
+          <RecordInfo>
+            <Field name="Name" size="254" source="(Multiple Sources)" type="V_String" />
+            <Field name="Gender" size="254" source="(Multiple Sources)" type="V_String" />
+            <Field name="Births" source="(Multiple Sources)" type="Int64" />
+            <Field name="Year" source="(Multiple Sources)" type="Int16" />
+          </RecordInfo>
+        </MetaInfo>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxUnion" />
+    </Node>
+    <Node ToolID="15">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.Formula.Formula">
+        <Position x="882" y="378" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <FormulaFields>
+            <FormulaField expression="0" field="Births" size="8" type="Int64" />
+          </FormulaFields>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>Set births to zero</AnnotationText>
+          <DefaultAnnotationText><![CDATA[Births = 0
+]]></DefaultAnnotationText>
+          <Left value="False" />
+        </Annotation>
+        <MetaInfo connection="Output">
+          <RecordInfo>
+            <Field name="Name" size="254" source="Summarize: GroupBy - Name" type="V_String" />
+            <Field name="Gender" size="254" source="Summarize: GroupBy - Gender" type="V_String" />
+            <Field name="Year" source="Summarize: GroupBy - Year" type="Int16" />
+            <Field name="Births" source="Formula: 0" type="Int64" />
+          </RecordInfo>
+          <SortInfo noProgress="True">
+            <Field field="Name" />
+            <Field field="Gender" />
+            <Field field="Year" />
+          </SortInfo>
+        </MetaInfo>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxFormula" />
+    </Node>
+    <Node ToolID="16">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.Sort.Sort">
+        <Position x="1146" y="318" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <SortInfo locale="0">
+            <Field field="Year" order="Ascending" />
+            <Field field="Gender" order="Ascending" />
+            <Field field="Births" order="Descending" />
+          </SortInfo>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>Sort by year, gender, and births</AnnotationText>
+          <DefaultAnnotationText>Year - Ascending
+Gender - Ascending
+Births - Descending</DefaultAnnotationText>
+          <Left value="False" />
+        </Annotation>
+        <MetaInfo connection="Output">
+          <RecordInfo>
+            <Field name="Name" size="254" source="(Multiple Sources)" type="V_String" />
+            <Field name="Gender" size="254" source="(Multiple Sources)" type="V_String" />
+            <Field name="Births" source="(Multiple Sources)" type="Int64" />
+            <Field name="Year" source="(Multiple Sources)" type="Int16" />
+          </RecordInfo>
+          <SortInfo locale="0">
+            <Field field="Year" order="Ascending" />
+            <Field field="Gender" order="Ascending" />
+            <Field field="Births" order="Descending" />
+          </SortInfo>
+        </MetaInfo>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxSort" />
+    </Node>
+    <Node ToolID="17">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.MultiRowFormula.MultiRowFormula">
+        <Position x="1266" y="318" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <UpdateField value="False" />
+          <UpdateField_Name>Name</UpdateField_Name>
+          <CreateField_Name>Rank</CreateField_Name>
+          <CreateField_Type>Int32</CreateField_Type>
+          <CreateField_Size>4</CreateField_Size>
+          <OtherRows>Empty</OtherRows>
+          <NumRows value="1" />
+          <Expression>IF [Births]=[Row-1:Births] THEN [Row-1:Rank]
+ELSE 1+[Row-1:Rank]
+ENDIF</Expression>
+          <GroupByFields>
+            <Field field="Gender" />
+            <Field field="Year" />
+          </GroupByFields>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>Create rank</AnnotationText>
+          <DefaultAnnotationText>IF [Births]=[Row-1:Births] THEN [Row-1:Rank]
+ELSE 1+[Row-1:Ra...</DefaultAnnotationText>
+          <Left value="False" />
+        </Annotation>
+        <MetaInfo connection="Output">
+          <RecordInfo>
+            <Field name="Name" size="254" source="(Multiple Sources)" type="V_String" />
+            <Field name="Gender" size="254" source="(Multiple Sources)" type="V_String" />
+            <Field name="Births" source="(Multiple Sources)" type="Int64" />
+            <Field name="Year" source="(Multiple Sources)" type="Int16" />
+            <Field description="Formula: IF [Births]=[Row-1:Births] THEN [Row-1:Rank]&#xA;ELSE 1+[Row-1:Rank]&#xA;ENDIF" name="Rank" source="Formula: IF [Births]=[Row-1:Births] THEN [Row-1:Rank]&#xA;ELSE 1+[Row-1:Rank]&#xA;ENDIF" type="Int32" />
+          </RecordInfo>
+          <SortInfo>
+            <Field field="Gender" order="Asc" />
+            <Field field="Year" order="Asc" />
+          </SortInfo>
+        </MetaInfo>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxMultiRowFormula" />
+    </Node>
+    <Node ToolID="18">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.Filter.Filter">
+        <Position x="1578" y="318" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <Expression>[Gender] = 'Male'
+AND
+[Name] = 'Justin'</Expression>
+          <Mode>Custom</Mode>
+          <Simple>
+            <Operator>=</Operator>
+            <Field>Gender</Field>
+            <Operands>
+              <IgnoreTimeInDateTime>True</IgnoreTimeInDateTime>
+              <DateType>fixed</DateType>
+              <PeriodDate>2020-03-02 09:44:06</PeriodDate>
+              <PeriodType>
+              </PeriodType>
+              <PeriodCount>0</PeriodCount>
+              <StartDate>2020-03-02 09:44:06</StartDate>
+              <EndDate>2020-03-02 09:44:06</EndDate>
+              <Operand>Male</Operand>
+            </Operands>
+          </Simple>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>Filter on gender and name</AnnotationText>
+          <DefaultAnnotationText>[Gender] = 'Male'
+AND
+[Name] = 'Justin'</DefaultAnnotationText>
+          <Left value="False" />
+        </Annotation>
+        <MetaInfo connection="True">
+          <RecordInfo>
+            <Field name="Name" size="254" source="(Multiple Sources)" type="V_String" />
+            <Field name="Gender" size="254" source="(Multiple Sources)" type="V_String" />
+            <Field name="Births" source="(Multiple Sources)" type="Int64" />
+            <Field name="Year" source="(Multiple Sources)" type="Int16" />
+            <Field description="Formula: IF [Births]=[Row-1:Births] THEN [Row-1:Rank]&#xA;ELSE 1+[Row-1:Rank]&#xA;ENDIF" name="Rank" source="Formula: IF [Births]=[Row-1:Births] THEN [Row-1:Rank]&#xA;ELSE 1+[Row-1:Rank]&#xA;ENDIF" type="Int32" />
+            <Field description="Formula: IF [Births]=[Row-1:Births] THEN [Row-1:Rank]&#xA;ELSE 1+[Row-1:Rank]&#xA;ENDIF" name="Max_Rank" source="Formula: IF [Births]=[Row-1:Births] THEN [Row-1:Rank]&#xA;ELSE 1+[Row-1:Rank]&#xA;ENDIF" type="Int32" />
+          </RecordInfo>
+          <SortInfo>
+            <Field field="Gender" order="" />
+            <Field field="Year" order="" />
+          </SortInfo>
+        </MetaInfo>
+        <MetaInfo connection="False">
+          <RecordInfo>
+            <Field name="Name" size="254" source="(Multiple Sources)" type="V_String" />
+            <Field name="Gender" size="254" source="(Multiple Sources)" type="V_String" />
+            <Field name="Births" source="(Multiple Sources)" type="Int64" />
+            <Field name="Year" source="(Multiple Sources)" type="Int16" />
+            <Field description="Formula: IF [Births]=[Row-1:Births] THEN [Row-1:Rank]&#xA;ELSE 1+[Row-1:Rank]&#xA;ENDIF" name="Rank" source="Formula: IF [Births]=[Row-1:Births] THEN [Row-1:Rank]&#xA;ELSE 1+[Row-1:Rank]&#xA;ENDIF" type="Int32" />
+            <Field description="Formula: IF [Births]=[Row-1:Births] THEN [Row-1:Rank]&#xA;ELSE 1+[Row-1:Rank]&#xA;ENDIF" name="Max_Rank" source="Formula: IF [Births]=[Row-1:Births] THEN [Row-1:Rank]&#xA;ELSE 1+[Row-1:Rank]&#xA;ENDIF" type="Int32" />
+          </RecordInfo>
+          <SortInfo>
+            <Field field="Gender" order="" />
+            <Field field="Year" order="" />
+          </SortInfo>
+        </MetaInfo>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxFilter" />
+    </Node>
+    <Node ToolID="19">
+      <GuiSettings Plugin="PlotlyCharting">
+        <Position x="1806" y="318" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <ChartingFields>
+            <Traces json:Array="true" xmlns:json="http://james.newtonking.com/projects/json">
+              <type>scatter</type>
+              <mode>lines</mode>
+              <xsrc>Year</xsrc>
+              <ysrc>Rank Percentile</ysrc>
+              <line>
+                <width>2</width>
+              </line>
+              <marker>
+                <size>6</size>
+                <line>
+                  <width>0</width>
+                </line>
+              </marker>
+              <fill>tozeroy</fill>
+              <hoverinfo>x+y</hoverinfo>
+              <showlegend>false</showlegend>
+              <transforms json:Array="true">
+                <type>groupby</type>
+                <groupssrc>Name</groupssrc>
+                <styles json:Array="true">
+                  <target>Justin</target>
+                  <value>
+                    <line>
+                      <width>2</width>
+                    </line>
+                  </value>
+                </styles>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+                <groups>Justin</groups>
+              </transforms>
+              <name>&lt;br&gt;</name>
+            </Traces>
+            <Layout>
+              <title>&lt;br&gt;</title>
+              <font>
+                <family>sans-serif</family>
+                <size>12</size>
+              </font>
+              <autosize>false</autosize>
+              <width>700</width>
+              <height>849</height>
+              <showlegend>true</showlegend>
+              <hovermode>closest</hovermode>
+              <margin>
+                <pad>0</pad>
+                <t>100</t>
+                <b>80</b>
+                <l>80</l>
+                <r>80</r>
+              </margin>
+              <titlefont>
+                <size>17</size>
+              </titlefont>
+              <legend>
+                <font>
+                  <size>12</size>
+                </font>
+                <borderwidth>0</borderwidth>
+              </legend>
+              <xaxis>
+                <range>1880</range>
+                <range>2018</range>
+                <autorange>true</autorange>
+                <title>Year</title>
+                <type>linear</type>
+                <titlefont>
+                  <size>14</size>
+                </titlefont>
+                <tickfont>
+                  <size>12</size>
+                </tickfont>
+                <nticks>0</nticks>
+              </xaxis>
+              <yaxis>
+                <range>0</range>
+                <range>1.0439201451905631</range>
+                <autorange>true</autorange>
+                <title>Rank Percentile</title>
+                <type>linear</type>
+              </yaxis>
+            </Layout>
+          </ChartingFields>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>Create interactive chart</AnnotationText>
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+        <MetaInfo connection="Output">
+          <RecordInfo>
+            <Field name="Chart" size="2147483647" source="Report:Chart:" type="V_String" />
+          </RecordInfo>
+        </MetaInfo>
+      </Properties>
+      <EngineSettings EngineDll="PortfolioPluginsEngine.dll" EngineDllEntryPoint="ComposerInteractiveCharting" />
+    </Node>
+    <Node ToolID="20">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.Formula.Formula">
+        <Position x="1698" y="318" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <FormulaFields>
+            <FormulaField expression="([Max_Rank]-[Rank]+1)/[Max_Rank]" field="Rank Percentile" size="8" type="Double" />
+          </FormulaFields>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>Find rank percentile</AnnotationText>
+          <DefaultAnnotationText><![CDATA[Rank Percentile = ([Max_Rank]-[Rank]+1)/[Max_Rank]
+]]></DefaultAnnotationText>
+          <Left value="False" />
+        </Annotation>
+        <MetaInfo connection="Output">
+          <RecordInfo>
+            <Field name="Name" size="254" source="(Multiple Sources)" type="V_String" />
+            <Field name="Gender" size="254" source="(Multiple Sources)" type="V_String" />
+            <Field name="Births" source="(Multiple Sources)" type="Int64" />
+            <Field name="Year" source="(Multiple Sources)" type="Int16" />
+            <Field description="Formula: IF [Births]=[Row-1:Births] THEN [Row-1:Rank]&#xA;ELSE 1+[Row-1:Rank]&#xA;ENDIF" name="Rank" source="Formula: IF [Births]=[Row-1:Births] THEN [Row-1:Rank]&#xA;ELSE 1+[Row-1:Rank]&#xA;ENDIF" type="Int32" />
+            <Field description="Formula: IF [Births]=[Row-1:Births] THEN [Row-1:Rank]&#xA;ELSE 1+[Row-1:Rank]&#xA;ENDIF" name="Max_Rank" source="Formula: IF [Births]=[Row-1:Births] THEN [Row-1:Rank]&#xA;ELSE 1+[Row-1:Rank]&#xA;ENDIF" type="Int32" />
+            <Field name="Rank Percentile" source="Formula: ([Max_Rank]-[Rank]+1)/[Max_Rank]" type="Double" />
+          </RecordInfo>
+          <SortInfo>
+            <Field field="Gender" order="" />
+            <Field field="Year" order="" />
+          </SortInfo>
+        </MetaInfo>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxFormula" />
+    </Node>
+    <Node ToolID="21">
+      <GuiSettings Plugin="AlteryxSpatialPluginsGui.Summarize.Summarize">
+        <Position x="1374" y="426" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <SummarizeFields>
+            <SummarizeField field="Gender" action="GroupBy" rename="Gender" />
+            <SummarizeField field="Year" action="GroupBy" rename="Year" />
+            <SummarizeField field="Rank" action="Max" rename="Max_Rank" />
+          </SummarizeFields>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>Create max rank by gender and year</AnnotationText>
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+        <MetaInfo connection="Output">
+          <RecordInfo>
+            <Field name="Gender" size="254" source="Summarize: GroupBy - Gender" type="V_String" />
+            <Field name="Year" source="Summarize: GroupBy - Year" type="Int16" />
+            <Field description="Formula: IF [Births]=[Row-1:Births] THEN [Row-1:Rank]&#xA;ELSE 1+[Row-1:Rank]&#xA;ENDIF" name="Max_Rank" source="Formula: IF [Births]=[Row-1:Births] THEN [Row-1:Rank]&#xA;ELSE 1+[Row-1:Rank]&#xA;ENDIF" type="Int32" />
+          </RecordInfo>
+          <SortInfo>
+            <Field field="Gender" order="Asc" />
+            <Field field="Year" order="Asc" />
+          </SortInfo>
+        </MetaInfo>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxSpatialPluginsEngine.dll" EngineDllEntryPoint="AlteryxSummarize" />
+    </Node>
+    <Node ToolID="22">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.Join.Join">
+        <Position x="1470" y="318" />
+      </GuiSettings>
+      <Properties>
+        <Configuration joinByRecordPos="False">
+          <JoinInfo connection="Left">
+            <Field field="Gender" />
+            <Field field="Year" />
+          </JoinInfo>
+          <JoinInfo connection="Right">
+            <Field field="Gender" />
+            <Field field="Year" />
+          </JoinInfo>
+          <SelectConfiguration>
+            <Configuration outputConnection="Join">
+              <OrderChanged value="False" />
+              <CommaDecimal value="False" />
+              <SelectFields>
+                <SelectField field="Right_Gender" selected="False" rename="Right_Gender" input="Right_" />
+                <SelectField field="Right_Year" selected="False" rename="Right_Year" input="Right_" />
+                <SelectField field="*Unknown" selected="True" />
+              </SelectFields>
+            </Configuration>
+          </SelectConfiguration>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+        <MetaInfo connection="Left">
+          <RecordInfo>
+            <Field name="Name" size="254" source="(Multiple Sources)" type="V_String" />
+            <Field name="Gender" size="254" source="(Multiple Sources)" type="V_String" />
+            <Field name="Births" source="(Multiple Sources)" type="Int64" />
+            <Field name="Year" source="(Multiple Sources)" type="Int16" />
+            <Field description="Formula: IF [Births]=[Row-1:Births] THEN [Row-1:Rank]&#xA;ELSE 1+[Row-1:Rank]&#xA;ENDIF" name="Rank" source="Formula: IF [Births]=[Row-1:Births] THEN [Row-1:Rank]&#xA;ELSE 1+[Row-1:Rank]&#xA;ENDIF" type="Int32" />
+          </RecordInfo>
+          <SortInfo noProgress="True">
+            <Field field="Gender" />
+            <Field field="Year" />
+          </SortInfo>
+        </MetaInfo>
+        <MetaInfo connection="Join">
+          <RecordInfo>
+            <Field name="Name" size="254" source="(Multiple Sources)" type="V_String" />
+            <Field name="Gender" size="254" source="(Multiple Sources)" type="V_String" />
+            <Field name="Births" source="(Multiple Sources)" type="Int64" />
+            <Field name="Year" source="(Multiple Sources)" type="Int16" />
+            <Field description="Formula: IF [Births]=[Row-1:Births] THEN [Row-1:Rank]&#xA;ELSE 1+[Row-1:Rank]&#xA;ENDIF" name="Rank" source="Formula: IF [Births]=[Row-1:Births] THEN [Row-1:Rank]&#xA;ELSE 1+[Row-1:Rank]&#xA;ENDIF" type="Int32" />
+            <Field description="Formula: IF [Births]=[Row-1:Births] THEN [Row-1:Rank]&#xA;ELSE 1+[Row-1:Rank]&#xA;ENDIF" name="Max_Rank" source="Formula: IF [Births]=[Row-1:Births] THEN [Row-1:Rank]&#xA;ELSE 1+[Row-1:Rank]&#xA;ENDIF" type="Int32" />
+          </RecordInfo>
+          <SortInfo>
+            <Field field="Gender" order="" />
+            <Field field="Year" order="" />
+          </SortInfo>
+        </MetaInfo>
+        <MetaInfo connection="Right">
+          <RecordInfo>
+            <Field name="Gender" size="254" source="Summarize: GroupBy - Gender" type="V_String" />
+            <Field name="Year" source="Summarize: GroupBy - Year" type="Int16" />
+            <Field description="Formula: IF [Births]=[Row-1:Births] THEN [Row-1:Rank]&#xA;ELSE 1+[Row-1:Rank]&#xA;ENDIF" name="Max_Rank" source="Formula: IF [Births]=[Row-1:Births] THEN [Row-1:Rank]&#xA;ELSE 1+[Row-1:Rank]&#xA;ENDIF" type="Int32" />
+          </RecordInfo>
+          <SortInfo noProgress="True">
+            <Field field="Gender" />
+            <Field field="Year" />
+          </SortInfo>
+        </MetaInfo>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxJoin" />
+    </Node>
+    <Node ToolID="24">
+      <GuiSettings Plugin="PortfolioPluginsGui.ComposerText.PortfolioComposerText">
+        <Position x="1914" y="186" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <Images />
+          <Output>Title</Output>
+          <HeaderMode value="False" />
+          <RawMode value="False" />
+          <ValidatePCXML value="True" />
+          <Message />
+          <RichTextMode value="True" />
+          <RichTextString><![CDATA[{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}{\f1\fnil\fcharset0 Arial;}}
+\viewkind4\uc1\pard\qc\f0\fs32 Popularity of the name [Name:A]\f1\fs24\par
+}
+]]></RichTextString>
+          <Styles>
+            <Style Name="TextStyle" />
+          </Styles>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>Create report header</AnnotationText>
+          <DefaultAnnotationText>Popularity of the name [Name:A...</DefaultAnnotationText>
+          <Left value="False" />
+        </Annotation>
+        <MetaInfo connection="Output">
+          <RecordInfo>
+            <Field name="Name" size="254" source="Summarize: GroupBy - Name" type="V_String" />
+            <Field name="Title" size="2147483647" source="Report:Text:" type="V_String" />
+          </RecordInfo>
+          <SortInfo>
+            <Field field="Name" order="Asc" />
+          </SortInfo>
+        </MetaInfo>
+      </Properties>
+      <EngineSettings EngineDll="PortfolioPluginsEngine.dll" EngineDllEntryPoint="AlteryxPortfolioComposerTextPlugin" />
+    </Node>
+    <Node ToolID="25">
+      <GuiSettings Plugin="AlteryxSpatialPluginsGui.Summarize.Summarize">
+        <Position x="1806" y="186" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <SummarizeFields>
+            <SummarizeField field="Name" action="GroupBy" rename="Name" />
+          </SummarizeFields>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>Get unique name</AnnotationText>
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+        <MetaInfo connection="Output">
+          <RecordInfo>
+            <Field name="Name" size="254" source="Summarize: GroupBy - Name" type="V_String" />
+          </RecordInfo>
+          <SortInfo>
+            <Field field="Name" order="Asc" />
+          </SortInfo>
+        </MetaInfo>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxSpatialPluginsEngine.dll" EngineDllEntryPoint="AlteryxSummarize" />
+    </Node>
+    <Node ToolID="26">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.JoinMultiple.JoinMultiple">
+        <Position x="2010" y="318" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <JoinByRecPos value="True" />
+          <OutputJoinOnly value="False" />
+          <SelectConfiguration>
+            <Configuration outputConnection="Output">
+              <OrderChanged value="False" />
+              <CommaDecimal value="False" />
+              <SelectFields>
+                <SelectField field="*Unknown" selected="True" />
+              </SelectFields>
+            </Configuration>
+          </SelectConfiguration>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>Join header and chart</AnnotationText>
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+        <MetaInfo connection="Output">
+          <RecordInfo>
+            <Field name="Chart" size="2147483647" source="Report:Chart:" type="V_String" />
+            <Field name="Name" size="254" source="Summarize: GroupBy - Name" type="V_String" />
+            <Field name="Title" size="2147483647" source="Report:Text:" type="V_String" />
+          </RecordInfo>
+        </MetaInfo>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxJoinMultiple" />
+    </Node>
+    <Node ToolID="27">
+      <GuiSettings Plugin="PortfolioPluginsGui.ComposerLayout.PortfolioComposerLayout">
+        <Position x="2118" y="318" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <GroupingMode>PerRecord</GroupingMode>
+          <PreserveSourceFields value="False" />
+          <Orientation>V</Orientation>
+          <Separator>Continuous</Separator>
+          <Width>672</Width>
+          <Height>672</Height>
+          <BorderStyle Enabled="false" Color="#000000" Width="2" />
+          <SeparatorStyle Enabled="false" Color="#000000" Width="1" />
+          <Padding>0</Padding>
+          <LayoutFields orderChanged="True">
+            <Field name="Title" selected="True" Alignment="Center" Width="" />
+            <Field name="Chart" selected="True" Alignment="Center" />
+          </LayoutFields>
+          <MergeIntoTable value="False" />
+          <SectionNameForGroup />
+          <SectionNameForAllRecords />
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>Create layout</AnnotationText>
+          <DefaultAnnotationText>Vertical Layout
+Each Individual Record</DefaultAnnotationText>
+          <Left value="False" />
+        </Annotation>
+        <MetaInfo connection="Output">
+          <RecordInfo>
+            <Field name="Name" size="254" source="Summarize: GroupBy - Name" type="V_String" />
+            <Field name="Layout" size="2147483647" source="Report:Layout:" type="V_String" />
+          </RecordInfo>
+        </MetaInfo>
+      </Properties>
+      <EngineSettings EngineDll="PortfolioPluginsEngine.dll" EngineDllEntryPoint="AlteryxPortfolioComposerLayoutPlugin" />
+    </Node>
+    <Node ToolID="28">
+      <GuiSettings Plugin="PortfolioPluginsGui.ComposerRender.PortfolioComposerRender">
+        <Position x="2226" y="318" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <TempFileType>html</TempFileType>
+          <BatchMode value="False" />
+          <DataField>Layout</DataField>
+          <Separator>Continuous</Separator>
+          <EmbedDependencies value="False" />
+          <ShowHeader value="False" />
+          <ShowFooter value="False" />
+          <PortraitMode value="True" />
+          <PaperType Width="504" Height="504" Left="36" Right="36" Top="36" Bottom="36" />
+          <DefaultStyles>
+            <Style Name="TextStyle" FontName="Arial" FontSize="14" Justify="Left" ForeColor="#000000" Locale="1033" />
+          </DefaultStyles>
+          <PNGResolution>1</PNGResolution>
+          <PNGLargerAction>squeeze</PNGLargerAction>
+          <PNGLargerThanPageChoice>warning</PNGLargerThanPageChoice>
+          <PNGTransparentBG value="False" />
+          <PNGBackColor value="#ffffff" />
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>Render file</AnnotationText>
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="PortfolioPluginsEngine.dll" EngineDllEntryPoint="AlteryxPortfolioComposerRenderPlugin" />
+    </Node>
+    <Node ToolID="29">
+      <GuiSettings Plugin="AlteryxGuiToolkit.Questions.Tab.Tab">
+        <Position x="0" y="0" width="59" height="59" />
+      </GuiSettings>
+      <Properties>
+        <Configuration />
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+    </Node>
+    <Node ToolID="31">
+      <GuiSettings Plugin="AlteryxGuiToolkit.Action.Action">
+        <Position x="1458" y="174" width="59" height="59" />
+      </GuiSettings>
+      <Properties>
+        <Configuration />
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+    </Node>
+    <Node ToolID="32">
+      <GuiSettings Plugin="AlteryxGuiToolkit.Questions.DropDownListBox.DropDown">
+        <Position x="1386" y="54" width="59" height="59" />
+      </GuiSettings>
+      <Properties>
+        <Configuration />
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+    </Node>
+    <Node ToolID="33">
+      <GuiSettings Plugin="AlteryxGuiToolkit.Questions.TextBox.QuestionTextBox">
+        <Position x="1650" y="54" width="59" height="59" />
+      </GuiSettings>
+      <Properties>
+        <Configuration />
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+    </Node>
+    <Node ToolID="34">
+      <GuiSettings Plugin="AlteryxGuiToolkit.Action.Action">
+        <Position x="1614" y="186" width="59" height="59" />
+      </GuiSettings>
+      <Properties>
+        <Configuration />
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+    </Node>
+  </Nodes>
+  <Connections>
+    <Connection>
+      <Origin ToolID="1" Connection="Output" />
+      <Destination ToolID="4" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="3" Connection="Output" />
+      <Destination ToolID="7" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="3" Connection="Output" />
+      <Destination ToolID="9" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="3" Connection="Output" />
+      <Destination ToolID="13" Connection="Left" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="11" Connection="Output" />
+      <Destination ToolID="13" Connection="Right" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="4" Connection="Output" />
+      <Destination ToolID="3" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="7" Connection="Output" />
+      <Destination ToolID="11" Connection="Targets" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="9" Connection="Output" />
+      <Destination ToolID="11" Connection="Source" />
+    </Connection>
+    <Connection name="#1">
+      <Origin ToolID="13" Connection="Join" />
+      <Destination ToolID="14" Connection="Input" />
+    </Connection>
+    <Connection name="#2">
+      <Origin ToolID="15" Connection="Output" />
+      <Destination ToolID="14" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="13" Connection="Right" />
+      <Destination ToolID="15" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="14" Connection="Output" />
+      <Destination ToolID="16" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="16" Connection="Output" />
+      <Destination ToolID="17" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="17" Connection="Output" />
+      <Destination ToolID="21" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="17" Connection="Output" />
+      <Destination ToolID="22" Connection="Left" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="21" Connection="Output" />
+      <Destination ToolID="22" Connection="Right" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="18" Connection="True" />
+      <Destination ToolID="20" Connection="Input" />
+    </Connection>
+    <Connection name="#2">
+      <Origin ToolID="19" Connection="Output" />
+      <Destination ToolID="26" Connection="Input" />
+    </Connection>
+    <Connection name="#1">
+      <Origin ToolID="24" Connection="Output" />
+      <Destination ToolID="26" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="20" Connection="Output" />
+      <Destination ToolID="19" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="20" Connection="Output" />
+      <Destination ToolID="25" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="22" Connection="Join" />
+      <Destination ToolID="18" Connection="Input" />
+    </Connection>
+    <Connection name="#2">
+      <Origin ToolID="31" Connection="Action" />
+      <Destination ToolID="18" Connection="Action" />
+    </Connection>
+    <Connection name="#3">
+      <Origin ToolID="34" Connection="Action" />
+      <Destination ToolID="18" Connection="Action" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="25" Connection="Output" />
+      <Destination ToolID="24" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="26" Connection="Output" />
+      <Destination ToolID="27" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="27" Connection="Output" />
+      <Destination ToolID="28" Connection="Input" />
+    </Connection>
+    <Connection name="#1">
+      <Origin ToolID="32" Connection="Question" />
+      <Destination ToolID="31" Connection="Question" />
+    </Connection>
+    <Connection name="#1">
+      <Origin ToolID="33" Connection="Question" />
+      <Destination ToolID="34" Connection="Question" />
+    </Connection>
+  </Connections>
+  <Properties>
+    <Memory default="True" />
+    <GlobalRecordLimit value="0" />
+    <TempFiles default="True" />
+    <Annotation on="True" includeToolName="False" />
+    <ConvErrorLimit value="10" />
+    <ConvErrorLimit_Stop value="False" />
+    <CancelOnError value="False" />
+    <DisableBrowse value="False" />
+    <EnablePerformanceProfiling value="False" />
+    <DisableAllOutput value="False" />
+    <ShowAllMacroMessages value="False" />
+    <ShowConnectionStatusIsOn value="True" />
+    <ShowConnectionStatusOnlyWhenRunning value="True" />
+    <ZoomLevel value="0" />
+    <LayoutType>Horizontal</LayoutType>
+    <Constants>
+      <Constant>
+        <Namespace>Question</Namespace>
+        <Name>Drop Down (32)</Name>
+        <Value />
+        <IsNumeric value="False" />
+      </Constant>
+      <Constant>
+        <Namespace>Question</Namespace>
+        <Name>Text Box (33)</Name>
+        <Value />
+        <IsNumeric value="False" />
+      </Constant>
+    </Constants>
+    <MetaInfo>
+      <NameIsFileName value="True" />
+      <Name>Baby Names Challenge</Name>
+      <Description />
+      <RootToolName />
+      <ToolVersion />
+      <ToolInDb value="False" />
+      <CategoryName />
+      <SearchTags />
+      <Author />
+      <Company />
+      <Copyright />
+      <DescriptionLink actual="" displayed="" />
+      <Example>
+        <Description />
+        <File />
+      </Example>
+    </MetaInfo>
+    <Events>
+      <Enabled value="True" />
+    </Events>
+    <RuntimeProperties>
+      <Actions>
+        <NoCondition>
+          <Type>NoCondition</Type>
+          <Description>(Always Run)</Description>
+          <True>
+            <Action>
+              <Type>UpdateValue</Type>
+              <Description />
+              <ToolId value="31" />
+              <Mode>Simple</Mode>
+              <Variable />
+              <Replace value="True" />
+              <ReplaceText>Male</ReplaceText>
+              <Destination>18/Expression</Destination>
+            </Action>
+            <Action>
+              <Type>UpdateValue</Type>
+              <Description />
+              <ToolId value="34" />
+              <Mode>Simple</Mode>
+              <Variable />
+              <Replace value="True" />
+              <ReplaceText>Justin</ReplaceText>
+              <Destination>18/Expression</Destination>
+            </Action>
+          </True>
+        </NoCondition>
+      </Actions>
+      <Questions>
+        <Question>
+          <Type>Tab</Type>
+          <Description>Questions</Description>
+          <Name>Tab (29)</Name>
+          <ToolId value="29" />
+          <Questions>
+            <Question>
+              <Type>ListBox</Type>
+              <Description>Select Gender:</Description>
+              <Name>Drop Down (32)</Name>
+              <ToolId value="32" />
+              <Multiple value="False" />
+              <Default>Female</Default>
+              <Mode>Manual</Mode>
+              <Manual_Values><![CDATA[Female
+Male
+]]></Manual_Values>
+            </Question>
+            <Question>
+              <Type>TextBox</Type>
+              <Description>Type a name:</Description>
+              <Name>Text Box (33)</Name>
+              <ToolId value="33" />
+              <Default>Anne</Default>
+              <Password value="False" />
+              <Multiline value="False" />
+              <Hidden value="False" />
+            </Question>
+          </Questions>
+        </Question>
+      </Questions>
+      <ModuleType>Wizard</ModuleType>
+      <MacroCustomHelp value="False" />
+      <MacroDynamicOutputFields value="False" />
+      <MacroImageStd value="0" />
+      <MacroInputs />
+      <MacroOutputs />
+      <Wiz_CustomHelp value="False" />
+      <Wiz_CustomGraphic value="False" />
+      <Wiz_ShowOutput value="True" />
+      <Wiz_OpenOutputTools>
+        <Tool ToolId="19" Selected="False" />
+        <Tool ToolId="28" Selected="True" />
+      </Wiz_OpenOutputTools>
+      <Wiz_OutputMessage>Please click the link to see the report for the name you entered!</Wiz_OutputMessage>
+      <Wiz_NoOutputFilesMessage>It looks like the name you entered hasn't been given more than 5 times in any year since 1880.  You have entered a very unique name!</Wiz_NoOutputFilesMessage>
+      <Wiz_ChainRunWizard />
+    </RuntimeProperties>
+  </Properties>
+</AlteryxDocument>
