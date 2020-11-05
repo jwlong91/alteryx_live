@@ -1,0 +1,3130 @@
+<?xml version="1.0"?>
+<AlteryxDocument yxmdVer="2019.2">
+  <Nodes>
+    <Node ToolID="2">
+      <GuiSettings Plugin="AlteryxGuiToolkit.Questions.Tab.Tab">
+        <Position x="0" y="0" width="59" height="59" />
+      </GuiSettings>
+      <Properties>
+        <Configuration />
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+    </Node>
+    <Node ToolID="3">
+      <GuiSettings Plugin="AlteryxSpatialPluginsGui.Summarize.Summarize">
+        <Position x="174" y="462" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <SummarizeFields>
+            <SummarizeField field="Week_Start" action="Max" rename="Holdout Cutoff" />
+          </SummarizeFields>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>Find max week start</AnnotationText>
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+        <MetaInfo connection="Output">
+          <RecordInfo>
+            <Field name="Holdout Cutoff" source="TextInput:" type="Date" />
+          </RecordInfo>
+        </MetaInfo>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxSpatialPluginsEngine.dll" EngineDllEntryPoint="AlteryxSummarize" />
+    </Node>
+    <Node ToolID="4">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.Formula.Formula">
+        <Position x="282" y="462" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <FormulaFields>
+            <FormulaField expression="DateTimeAdd([Holdout Cutoff],-1,'year')" field="Holdout Cutoff" size="10" type="Date" />
+          </FormulaFields>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>Subtract one year for holdout cutoff</AnnotationText>
+          <DefaultAnnotationText><![CDATA[Holdout Cutoff = DateTimeAdd([Holdout Cutoff],-1,'year')
+]]></DefaultAnnotationText>
+          <Left value="False" />
+        </Annotation>
+        <MetaInfo connection="Output">
+          <RecordInfo>
+            <Field name="Holdout Cutoff" source="Formula: DateTimeAdd([Holdout Cutoff],-1,'year')" type="Date" />
+          </RecordInfo>
+        </MetaInfo>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxFormula" />
+    </Node>
+    <Node ToolID="6">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.AppendFields.AppendFields">
+        <Position x="378" y="378" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <CartesianMode>Error</CartesianMode>
+          <SelectConfiguration>
+            <Configuration outputConnection="Output">
+              <OrderChanged value="False" />
+              <CommaDecimal value="False" />
+              <SelectFields>
+                <SelectField field="*Unknown" selected="True" />
+              </SelectFields>
+            </Configuration>
+          </SelectConfiguration>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+        <MetaInfo connection="Output">
+          <RecordInfo>
+            <Field name="Week_Start" source="TextInput:" type="Date" />
+            <Field name="Product" size="7" source="TextInput:" type="String" />
+            <Field name="Sales" source="TextInput:" type="Double" />
+            <Field name="Holdout Cutoff" source="Formula: DateTimeAdd([Holdout Cutoff],-1,'year')" type="Date" />
+          </RecordInfo>
+        </MetaInfo>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxAppendFields" />
+    </Node>
+    <Node ToolID="27">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.Join.Join">
+        <Position x="1482" y="366" />
+      </GuiSettings>
+      <Properties>
+        <Configuration joinByRecordPos="False">
+          <JoinInfo connection="Left">
+            <Field field="model" />
+          </JoinInfo>
+          <JoinInfo connection="Right">
+            <Field field="Model" />
+          </JoinInfo>
+          <SelectConfiguration>
+            <Configuration outputConnection="Join">
+              <OrderChanged value="False" />
+              <CommaDecimal value="False" />
+              <SelectFields>
+                <SelectField field="Left_model" selected="False" input="Left_" />
+                <SelectField field="Right_Model" selected="False" rename="Right_Model" input="Right_" />
+                <SelectField field="Right_ME" selected="False" input="Right_" />
+                <SelectField field="Right_RMSE" selected="False" input="Right_" />
+                <SelectField field="Right_MAE" selected="False" input="Right_" />
+                <SelectField field="Right_MPE" selected="False" input="Right_" />
+                <SelectField field="Right_MAPE" selected="False" input="Right_" />
+                <SelectField field="Right_MASE" selected="False" input="Right_" />
+                <SelectField field="Right_NA" selected="False" input="Right_" />
+                <SelectField field="*Unknown" selected="True" />
+              </SelectFields>
+            </Configuration>
+          </SelectConfiguration>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>Join on model to keep most accurate model</AnnotationText>
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+        <MetaInfo connection="Left">
+          <RecordInfo>
+            <Field name="Period" source="R-DATA:" type="Double" />
+            <Field name="Sub_Period" source="R-DATA:" type="Int32" />
+            <Field name="forecast" source="R-DATA:" type="Double" />
+            <Field name="forecast_high_95" source="R-DATA:" type="Double" />
+            <Field name="forecast_high_80" source="R-DATA:" type="Double" />
+            <Field name="forecast_low_80" source="R-DATA:" type="Double" />
+            <Field name="forecast_low_95" source="R-DATA:" type="Double" />
+            <Field name="model" size="1073741823" source="Formula: (Multiple Sources)" type="V_WString" />
+          </RecordInfo>
+          <SortInfo noProgress="True">
+            <Field field="model" />
+          </SortInfo>
+        </MetaInfo>
+        <MetaInfo connection="Join">
+          <RecordInfo>
+            <Field name="Period" source="R-DATA:" type="Double" />
+            <Field name="Sub_Period" source="R-DATA:" type="Int32" />
+            <Field name="forecast" source="R-DATA:" type="Double" />
+            <Field name="forecast_high_95" source="R-DATA:" type="Double" />
+            <Field name="forecast_high_80" source="R-DATA:" type="Double" />
+            <Field name="forecast_low_80" source="R-DATA:" type="Double" />
+            <Field name="forecast_low_95" source="R-DATA:" type="Double" />
+          </RecordInfo>
+        </MetaInfo>
+        <MetaInfo connection="Right">
+          <RecordInfo>
+            <Field name="Model" size="1073741823" source="R-DATA:" type="V_WString" />
+          </RecordInfo>
+          <SortInfo noProgress="True">
+            <Field field="Model" />
+          </SortInfo>
+        </MetaInfo>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxJoin" />
+    </Node>
+    <Node ToolID="28">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.Formula.Formula">
+        <Position x="1614" y="366" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <FormulaFields>
+            <FormulaField expression="'Produce'" field="Product" size="1073741823" type="V_WString" />
+          </FormulaFields>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <AnnotationText>Create field for product type</AnnotationText>
+          <DefaultAnnotationText><![CDATA[Product = 'Produce'
+]]></DefaultAnnotationText>
+          <Left value="False" />
+        </Annotation>
+        <MetaInfo connection="Output">
+          <RecordInfo>
+            <Field name="Period" source="R-DATA:" type="Double" />
+            <Field name="Sub_Period" source="R-DATA:" type="Int32" />
+            <Field name="forecast" source="R-DATA:" type="Double" />
+            <Field name="forecast_high_95" source="R-DATA:" type="Double" />
+            <Field name="forecast_high_80" source="R-DATA:" type="Double" />
+            <Field name="forecast_low_80" source="R-DATA:" type="Double" />
+            <Field name="forecast_low_95" source="R-DATA:" type="Double" />
+            <Field name="Product" size="1073741823" source="Formula: 'Produce'" type="V_WString" />
+          </RecordInfo>
+        </MetaInfo>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxFormula" />
+    </Node>
+    <Node ToolID="29">
+      <GuiSettings Plugin="AlteryxGuiToolkit.Questions.ControlParam.ControlParam">
+        <Position x="1578" y="126" width="59" height="59" />
+      </GuiSettings>
+      <Properties>
+        <Configuration />
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+    </Node>
+    <Node ToolID="30">
+      <GuiSettings Plugin="AlteryxGuiToolkit.Action.Action">
+        <Position x="1596" y="246" width="59" height="59" />
+      </GuiSettings>
+      <Properties>
+        <Configuration />
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+    </Node>
+    <Node ToolID="31">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.MacroOutput.MacroOutput">
+        <Position x="1746" y="366" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <Name>Output31</Name>
+          <Abbrev>O</Abbrev>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxMacroOutput" />
+    </Node>
+    <Node ToolID="36">
+      <GuiSettings Plugin="AlteryxBasePluginsGui.MacroInput.MacroInput">
+        <Position x="54" y="378" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <UseFileInput value="False" />
+          <Name>Input36</Name>
+          <Abbrev>I</Abbrev>
+          <ShowFieldMap value="False" />
+          <Optional value="False" />
+          <TextInput>
+            <Configuration>
+              <NumRows value="365" />
+              <Fields>
+                <Field name="Week_Start" />
+                <Field name="Product" />
+                <Field name="Sales" />
+              </Fields>
+              <Data>
+                <r>
+                  <c>2010-01-03</c>
+                  <c>Produce</c>
+                  <c>100.23</c>
+                </r>
+                <r>
+                  <c>2010-01-10</c>
+                  <c>Produce</c>
+                  <c>79.24</c>
+                </r>
+                <r>
+                  <c>2010-01-17</c>
+                  <c>Produce</c>
+                  <c>109.77</c>
+                </r>
+                <r>
+                  <c>2010-01-24</c>
+                  <c>Produce</c>
+                  <c>110.57</c>
+                </r>
+                <r>
+                  <c>2010-01-31</c>
+                  <c>Produce</c>
+                  <c>80.58</c>
+                </r>
+                <r>
+                  <c>2010-02-07</c>
+                  <c>Produce</c>
+                  <c>88.16</c>
+                </r>
+                <r>
+                  <c>2010-02-14</c>
+                  <c>Produce</c>
+                  <c>87.88</c>
+                </r>
+                <r>
+                  <c>2010-02-21</c>
+                  <c>Produce</c>
+                  <c>89.01</c>
+                </r>
+                <r>
+                  <c>2010-02-28</c>
+                  <c>Produce</c>
+                  <c>81.72</c>
+                </r>
+                <r>
+                  <c>2010-03-07</c>
+                  <c>Produce</c>
+                  <c>103.83</c>
+                </r>
+                <r>
+                  <c>2010-03-14</c>
+                  <c>Produce</c>
+                  <c>90.6</c>
+                </r>
+                <r>
+                  <c>2010-03-21</c>
+                  <c>Produce</c>
+                  <c>81.53</c>
+                </r>
+                <r>
+                  <c>2010-03-28</c>
+                  <c>Produce</c>
+                  <c>102.49</c>
+                </r>
+                <r>
+                  <c>2010-04-04</c>
+                  <c>Produce</c>
+                  <c>84.46</c>
+                </r>
+                <r>
+                  <c>2010-04-11</c>
+                  <c>Produce</c>
+                  <c>100.92</c>
+                </r>
+                <r>
+                  <c>2010-04-18</c>
+                  <c>Produce</c>
+                  <c>104.83</c>
+                </r>
+                <r>
+                  <c>2010-04-25</c>
+                  <c>Produce</c>
+                  <c>89.9</c>
+                </r>
+                <r>
+                  <c>2010-05-02</c>
+                  <c>Produce</c>
+                  <c>68.05</c>
+                </r>
+                <r>
+                  <c>2010-05-09</c>
+                  <c>Produce</c>
+                  <c>88.04</c>
+                </r>
+                <r>
+                  <c>2010-05-16</c>
+                  <c>Produce</c>
+                  <c>83.76</c>
+                </r>
+                <r>
+                  <c>2010-05-23</c>
+                  <c>Produce</c>
+                  <c>99.78</c>
+                </r>
+                <r>
+                  <c>2010-05-30</c>
+                  <c>Produce</c>
+                  <c>110.13</c>
+                </r>
+                <r>
+                  <c>2010-06-06</c>
+                  <c>Produce</c>
+                  <c>99.15</c>
+                </r>
+                <r>
+                  <c>2010-06-13</c>
+                  <c>Produce</c>
+                  <c>100.6</c>
+                </r>
+                <r>
+                  <c>2010-06-20</c>
+                  <c>Produce</c>
+                  <c>92.05</c>
+                </r>
+                <r>
+                  <c>2010-06-27</c>
+                  <c>Produce</c>
+                  <c>96.67</c>
+                </r>
+                <r>
+                  <c>2010-07-04</c>
+                  <c>Produce</c>
+                  <c>83.71</c>
+                </r>
+                <r>
+                  <c>2010-07-11</c>
+                  <c>Produce</c>
+                  <c>90.15</c>
+                </r>
+                <r>
+                  <c>2010-07-18</c>
+                  <c>Produce</c>
+                  <c>87.04</c>
+                </r>
+                <r>
+                  <c>2010-07-25</c>
+                  <c>Produce</c>
+                  <c>85.29</c>
+                </r>
+                <r>
+                  <c>2010-08-01</c>
+                  <c>Produce</c>
+                  <c>110.37</c>
+                </r>
+                <r>
+                  <c>2010-08-08</c>
+                  <c>Produce</c>
+                  <c>85.11</c>
+                </r>
+                <r>
+                  <c>2010-08-15</c>
+                  <c>Produce</c>
+                  <c>97.86</c>
+                </r>
+                <r>
+                  <c>2010-08-22</c>
+                  <c>Produce</c>
+                  <c>108.07</c>
+                </r>
+                <r>
+                  <c>2010-08-29</c>
+                  <c>Produce</c>
+                  <c>88.38</c>
+                </r>
+                <r>
+                  <c>2010-09-05</c>
+                  <c>Produce</c>
+                  <c>80.93</c>
+                </r>
+                <r>
+                  <c>2010-09-12</c>
+                  <c>Produce</c>
+                  <c>92.95</c>
+                </r>
+                <r>
+                  <c>2010-09-19</c>
+                  <c>Produce</c>
+                  <c>96</c>
+                </r>
+                <r>
+                  <c>2010-09-26</c>
+                  <c>Produce</c>
+                  <c>95.46</c>
+                </r>
+                <r>
+                  <c>2010-10-03</c>
+                  <c>Produce</c>
+                  <c>908.01</c>
+                </r>
+                <r>
+                  <c>2010-10-10</c>
+                  <c>Produce</c>
+                  <c>878.49</c>
+                </r>
+                <r>
+                  <c>2010-10-17</c>
+                  <c>Produce</c>
+                  <c>902.49</c>
+                </r>
+                <r>
+                  <c>2010-10-24</c>
+                  <c>Produce</c>
+                  <c>909.32</c>
+                </r>
+                <r>
+                  <c>2010-10-31</c>
+                  <c>Produce</c>
+                  <c>923.33</c>
+                </r>
+                <r>
+                  <c>2010-11-07</c>
+                  <c>Produce</c>
+                  <c>113.87</c>
+                </r>
+                <r>
+                  <c>2010-11-14</c>
+                  <c>Produce</c>
+                  <c>92.88</c>
+                </r>
+                <r>
+                  <c>2010-11-21</c>
+                  <c>Produce</c>
+                  <c>95.35</c>
+                </r>
+                <r>
+                  <c>2010-11-28</c>
+                  <c>Produce</c>
+                  <c>84.28</c>
+                </r>
+                <r>
+                  <c>2010-12-05</c>
+                  <c>Produce</c>
+                  <c>89.2</c>
+                </r>
+                <r>
+                  <c>2010-12-12</c>
+                  <c>Produce</c>
+                  <c>102</c>
+                </r>
+                <r>
+                  <c>2010-12-19</c>
+                  <c>Produce</c>
+                  <c>110.47</c>
+                </r>
+                <r>
+                  <c>2010-12-26</c>
+                  <c>Produce</c>
+                  <c>88.89</c>
+                </r>
+                <r>
+                  <c>2011-01-02</c>
+                  <c>Produce</c>
+                  <c>89.65</c>
+                </r>
+                <r>
+                  <c>2011-01-09</c>
+                  <c>Produce</c>
+                  <c>67.22</c>
+                </r>
+                <r>
+                  <c>2011-01-16</c>
+                  <c>Produce</c>
+                  <c>111.81</c>
+                </r>
+                <r>
+                  <c>2011-01-23</c>
+                  <c>Produce</c>
+                  <c>105.78</c>
+                </r>
+                <r>
+                  <c>2011-01-30</c>
+                  <c>Produce</c>
+                  <c>89.17</c>
+                </r>
+                <r>
+                  <c>2011-02-06</c>
+                  <c>Produce</c>
+                  <c>96.02</c>
+                </r>
+                <r>
+                  <c>2011-02-13</c>
+                  <c>Produce</c>
+                  <c>92.92</c>
+                </r>
+                <r>
+                  <c>2011-02-20</c>
+                  <c>Produce</c>
+                  <c>115.96</c>
+                </r>
+                <r>
+                  <c>2011-02-27</c>
+                  <c>Produce</c>
+                  <c>82.92</c>
+                </r>
+                <r>
+                  <c>2011-03-06</c>
+                  <c>Produce</c>
+                  <c>108.14</c>
+                </r>
+                <r>
+                  <c>2011-03-13</c>
+                  <c>Produce</c>
+                  <c>94.52</c>
+                </r>
+                <r>
+                  <c>2011-03-20</c>
+                  <c>Produce</c>
+                  <c>108.31</c>
+                </r>
+                <r>
+                  <c>2011-03-27</c>
+                  <c>Produce</c>
+                  <c>114.14</c>
+                </r>
+                <r>
+                  <c>2011-04-03</c>
+                  <c>Produce</c>
+                  <c>110.32</c>
+                </r>
+                <r>
+                  <c>2011-04-10</c>
+                  <c>Produce</c>
+                  <c>102.04</c>
+                </r>
+                <r>
+                  <c>2011-04-17</c>
+                  <c>Produce</c>
+                  <c>102.86</c>
+                </r>
+                <r>
+                  <c>2011-04-24</c>
+                  <c>Produce</c>
+                  <c>77.77</c>
+                </r>
+                <r>
+                  <c>2011-05-01</c>
+                  <c>Produce</c>
+                  <c>95.92</c>
+                </r>
+                <r>
+                  <c>2011-05-08</c>
+                  <c>Produce</c>
+                  <c>98.61</c>
+                </r>
+                <r>
+                  <c>2011-05-15</c>
+                  <c>Produce</c>
+                  <c>94.43</c>
+                </r>
+                <r>
+                  <c>2011-05-22</c>
+                  <c>Produce</c>
+                  <c>110.08</c>
+                </r>
+                <r>
+                  <c>2011-05-29</c>
+                  <c>Produce</c>
+                  <c>88.73</c>
+                </r>
+                <r>
+                  <c>2011-06-05</c>
+                  <c>Produce</c>
+                  <c>85.87</c>
+                </r>
+                <r>
+                  <c>2011-06-12</c>
+                  <c>Produce</c>
+                  <c>95.04</c>
+                </r>
+                <r>
+                  <c>2011-06-19</c>
+                  <c>Produce</c>
+                  <c>91.87</c>
+                </r>
+                <r>
+                  <c>2011-06-26</c>
+                  <c>Produce</c>
+                  <c>96.16</c>
+                </r>
+                <r>
+                  <c>2011-07-03</c>
+                  <c>Produce</c>
+                  <c>95.73</c>
+                </r>
+                <r>
+                  <c>2011-07-10</c>
+                  <c>Produce</c>
+                  <c>86.61</c>
+                </r>
+                <r>
+                  <c>2011-07-17</c>
+                  <c>Produce</c>
+                  <c>100.52</c>
+                </r>
+                <r>
+                  <c>2011-07-24</c>
+                  <c>Produce</c>
+                  <c>92.46</c>
+                </r>
+                <r>
+                  <c>2011-07-31</c>
+                  <c>Produce</c>
+                  <c>93.23</c>
+                </r>
+                <r>
+                  <c>2011-08-07</c>
+                  <c>Produce</c>
+                  <c>104.88</c>
+                </r>
+                <r>
+                  <c>2011-08-14</c>
+                  <c>Produce</c>
+                  <c>95.04</c>
+                </r>
+                <r>
+                  <c>2011-08-21</c>
+                  <c>Produce</c>
+                  <c>102.07</c>
+                </r>
+                <r>
+                  <c>2011-08-28</c>
+                  <c>Produce</c>
+                  <c>102.27</c>
+                </r>
+                <r>
+                  <c>2011-09-04</c>
+                  <c>Produce</c>
+                  <c>101.13</c>
+                </r>
+                <r>
+                  <c>2011-09-11</c>
+                  <c>Produce</c>
+                  <c>86.53</c>
+                </r>
+                <r>
+                  <c>2011-09-18</c>
+                  <c>Produce</c>
+                  <c>90.88</c>
+                </r>
+                <r>
+                  <c>2011-09-25</c>
+                  <c>Produce</c>
+                  <c>94.95</c>
+                </r>
+                <r>
+                  <c>2011-10-02</c>
+                  <c>Produce</c>
+                  <c>1715.55</c>
+                </r>
+                <r>
+                  <c>2011-10-09</c>
+                  <c>Produce</c>
+                  <c>1691.79</c>
+                </r>
+                <r>
+                  <c>2011-10-16</c>
+                  <c>Produce</c>
+                  <c>1695.87</c>
+                </r>
+                <r>
+                  <c>2011-10-23</c>
+                  <c>Produce</c>
+                  <c>1679.45</c>
+                </r>
+                <r>
+                  <c>2011-10-30</c>
+                  <c>Produce</c>
+                  <c>1693.63</c>
+                </r>
+                <r>
+                  <c>2011-11-06</c>
+                  <c>Produce</c>
+                  <c>101.73</c>
+                </r>
+                <r>
+                  <c>2011-11-13</c>
+                  <c>Produce</c>
+                  <c>102.33</c>
+                </r>
+                <r>
+                  <c>2011-11-20</c>
+                  <c>Produce</c>
+                  <c>101.27</c>
+                </r>
+                <r>
+                  <c>2011-11-27</c>
+                  <c>Produce</c>
+                  <c>113.51</c>
+                </r>
+                <r>
+                  <c>2011-12-04</c>
+                  <c>Produce</c>
+                  <c>91.57</c>
+                </r>
+                <r>
+                  <c>2011-12-11</c>
+                  <c>Produce</c>
+                  <c>90.25</c>
+                </r>
+                <r>
+                  <c>2011-12-18</c>
+                  <c>Produce</c>
+                  <c>89.63</c>
+                </r>
+                <r>
+                  <c>2011-12-25</c>
+                  <c>Produce</c>
+                  <c>84.42</c>
+                </r>
+                <r>
+                  <c>2012-01-01</c>
+                  <c>Produce</c>
+                  <c>90.08</c>
+                </r>
+                <r>
+                  <c>2012-01-08</c>
+                  <c>Produce</c>
+                  <c>94.3</c>
+                </r>
+                <r>
+                  <c>2012-01-15</c>
+                  <c>Produce</c>
+                  <c>105.41</c>
+                </r>
+                <r>
+                  <c>2012-01-22</c>
+                  <c>Produce</c>
+                  <c>93.48</c>
+                </r>
+                <r>
+                  <c>2012-01-29</c>
+                  <c>Produce</c>
+                  <c>83.13</c>
+                </r>
+                <r>
+                  <c>2012-02-05</c>
+                  <c>Produce</c>
+                  <c>109.56</c>
+                </r>
+                <r>
+                  <c>2012-02-12</c>
+                  <c>Produce</c>
+                  <c>89.33</c>
+                </r>
+                <r>
+                  <c>2012-02-19</c>
+                  <c>Produce</c>
+                  <c>89.46</c>
+                </r>
+                <r>
+                  <c>2012-02-26</c>
+                  <c>Produce</c>
+                  <c>83.57</c>
+                </r>
+                <r>
+                  <c>2012-03-04</c>
+                  <c>Produce</c>
+                  <c>95.13</c>
+                </r>
+                <r>
+                  <c>2012-03-11</c>
+                  <c>Produce</c>
+                  <c>99.52</c>
+                </r>
+                <r>
+                  <c>2012-03-18</c>
+                  <c>Produce</c>
+                  <c>99.55</c>
+                </r>
+                <r>
+                  <c>2012-03-25</c>
+                  <c>Produce</c>
+                  <c>109.53</c>
+                </r>
+                <r>
+                  <c>2012-04-01</c>
+                  <c>Produce</c>
+                  <c>92.03</c>
+                </r>
+                <r>
+                  <c>2012-04-08</c>
+                  <c>Produce</c>
+                  <c>106.53</c>
+                </r>
+                <r>
+                  <c>2012-04-15</c>
+                  <c>Produce</c>
+                  <c>102.65</c>
+                </r>
+                <r>
+                  <c>2012-04-22</c>
+                  <c>Produce</c>
+                  <c>115.39</c>
+                </r>
+                <r>
+                  <c>2012-04-29</c>
+                  <c>Produce</c>
+                  <c>114.92</c>
+                </r>
+                <r>
+                  <c>2012-05-06</c>
+                  <c>Produce</c>
+                  <c>103.47</c>
+                </r>
+                <r>
+                  <c>2012-05-13</c>
+                  <c>Produce</c>
+                  <c>99.95</c>
+                </r>
+                <r>
+                  <c>2012-05-20</c>
+                  <c>Produce</c>
+                  <c>100.14</c>
+                </r>
+                <r>
+                  <c>2012-05-27</c>
+                  <c>Produce</c>
+                  <c>102.63</c>
+                </r>
+                <r>
+                  <c>2012-06-03</c>
+                  <c>Produce</c>
+                  <c>84.98</c>
+                </r>
+                <r>
+                  <c>2012-06-10</c>
+                  <c>Produce</c>
+                  <c>94.54</c>
+                </r>
+                <r>
+                  <c>2012-06-17</c>
+                  <c>Produce</c>
+                  <c>96.53</c>
+                </r>
+                <r>
+                  <c>2012-06-24</c>
+                  <c>Produce</c>
+                  <c>82.51</c>
+                </r>
+                <r>
+                  <c>2012-07-01</c>
+                  <c>Produce</c>
+                  <c>98.19</c>
+                </r>
+                <r>
+                  <c>2012-07-08</c>
+                  <c>Produce</c>
+                  <c>97.25</c>
+                </r>
+                <r>
+                  <c>2012-07-15</c>
+                  <c>Produce</c>
+                  <c>94.98</c>
+                </r>
+                <r>
+                  <c>2012-07-22</c>
+                  <c>Produce</c>
+                  <c>106.06</c>
+                </r>
+                <r>
+                  <c>2012-07-29</c>
+                  <c>Produce</c>
+                  <c>79.04</c>
+                </r>
+                <r>
+                  <c>2012-08-05</c>
+                  <c>Produce</c>
+                  <c>102.91</c>
+                </r>
+                <r>
+                  <c>2012-08-12</c>
+                  <c>Produce</c>
+                  <c>89.88</c>
+                </r>
+                <r>
+                  <c>2012-08-19</c>
+                  <c>Produce</c>
+                  <c>83.86</c>
+                </r>
+                <r>
+                  <c>2012-08-26</c>
+                  <c>Produce</c>
+                  <c>111.25</c>
+                </r>
+                <r>
+                  <c>2012-09-02</c>
+                  <c>Produce</c>
+                  <c>100.59</c>
+                </r>
+                <r>
+                  <c>2012-09-09</c>
+                  <c>Produce</c>
+                  <c>110.85</c>
+                </r>
+                <r>
+                  <c>2012-09-16</c>
+                  <c>Produce</c>
+                  <c>98.9</c>
+                </r>
+                <r>
+                  <c>2012-09-23</c>
+                  <c>Produce</c>
+                  <c>104.09</c>
+                </r>
+                <r>
+                  <c>2012-09-30</c>
+                  <c>Produce</c>
+                  <c>97.31</c>
+                </r>
+                <r>
+                  <c>2012-10-07</c>
+                  <c>Produce</c>
+                  <c>1887.59</c>
+                </r>
+                <r>
+                  <c>2012-10-14</c>
+                  <c>Produce</c>
+                  <c>1899.75</c>
+                </r>
+                <r>
+                  <c>2012-10-21</c>
+                  <c>Produce</c>
+                  <c>1879.85</c>
+                </r>
+                <r>
+                  <c>2012-10-28</c>
+                  <c>Produce</c>
+                  <c>1887.93</c>
+                </r>
+                <r>
+                  <c>2012-11-04</c>
+                  <c>Produce</c>
+                  <c>98.47</c>
+                </r>
+                <r>
+                  <c>2012-11-11</c>
+                  <c>Produce</c>
+                  <c>106.38</c>
+                </r>
+                <r>
+                  <c>2012-11-18</c>
+                  <c>Produce</c>
+                  <c>95.93</c>
+                </r>
+                <r>
+                  <c>2012-11-25</c>
+                  <c>Produce</c>
+                  <c>95.33</c>
+                </r>
+                <r>
+                  <c>2012-12-02</c>
+                  <c>Produce</c>
+                  <c>106.87</c>
+                </r>
+                <r>
+                  <c>2012-12-09</c>
+                  <c>Produce</c>
+                  <c>98.1</c>
+                </r>
+                <r>
+                  <c>2012-12-16</c>
+                  <c>Produce</c>
+                  <c>103.53</c>
+                </r>
+                <r>
+                  <c>2012-12-23</c>
+                  <c>Produce</c>
+                  <c>106.34</c>
+                </r>
+                <r>
+                  <c>2012-12-30</c>
+                  <c>Produce</c>
+                  <c>81.24</c>
+                </r>
+                <r>
+                  <c>2013-01-06</c>
+                  <c>Produce</c>
+                  <c>104.89</c>
+                </r>
+                <r>
+                  <c>2013-01-13</c>
+                  <c>Produce</c>
+                  <c>100.92</c>
+                </r>
+                <r>
+                  <c>2013-01-20</c>
+                  <c>Produce</c>
+                  <c>97.47</c>
+                </r>
+                <r>
+                  <c>2013-01-27</c>
+                  <c>Produce</c>
+                  <c>86.95</c>
+                </r>
+                <r>
+                  <c>2013-02-03</c>
+                  <c>Produce</c>
+                  <c>90.14</c>
+                </r>
+                <r>
+                  <c>2013-02-10</c>
+                  <c>Produce</c>
+                  <c>98.48</c>
+                </r>
+                <r>
+                  <c>2013-02-17</c>
+                  <c>Produce</c>
+                  <c>87.11</c>
+                </r>
+                <r>
+                  <c>2013-02-24</c>
+                  <c>Produce</c>
+                  <c>83.47</c>
+                </r>
+                <r>
+                  <c>2013-03-03</c>
+                  <c>Produce</c>
+                  <c>82.67</c>
+                </r>
+                <r>
+                  <c>2013-03-10</c>
+                  <c>Produce</c>
+                  <c>102.43</c>
+                </r>
+                <r>
+                  <c>2013-03-17</c>
+                  <c>Produce</c>
+                  <c>93.83</c>
+                </r>
+                <r>
+                  <c>2013-03-24</c>
+                  <c>Produce</c>
+                  <c>95.51</c>
+                </r>
+                <r>
+                  <c>2013-03-31</c>
+                  <c>Produce</c>
+                  <c>95.53</c>
+                </r>
+                <r>
+                  <c>2013-04-07</c>
+                  <c>Produce</c>
+                  <c>82.39</c>
+                </r>
+                <r>
+                  <c>2013-04-14</c>
+                  <c>Produce</c>
+                  <c>88.91</c>
+                </r>
+                <r>
+                  <c>2013-04-21</c>
+                  <c>Produce</c>
+                  <c>74.65</c>
+                </r>
+                <r>
+                  <c>2013-04-28</c>
+                  <c>Produce</c>
+                  <c>87.52</c>
+                </r>
+                <r>
+                  <c>2013-05-05</c>
+                  <c>Produce</c>
+                  <c>92.13</c>
+                </r>
+                <r>
+                  <c>2013-05-12</c>
+                  <c>Produce</c>
+                  <c>104.89</c>
+                </r>
+                <r>
+                  <c>2013-05-19</c>
+                  <c>Produce</c>
+                  <c>116.33</c>
+                </r>
+                <r>
+                  <c>2013-05-26</c>
+                  <c>Produce</c>
+                  <c>102.3</c>
+                </r>
+                <r>
+                  <c>2013-06-02</c>
+                  <c>Produce</c>
+                  <c>99.13</c>
+                </r>
+                <r>
+                  <c>2013-06-09</c>
+                  <c>Produce</c>
+                  <c>98.64</c>
+                </r>
+                <r>
+                  <c>2013-06-16</c>
+                  <c>Produce</c>
+                  <c>104.07</c>
+                </r>
+                <r>
+                  <c>2013-06-23</c>
+                  <c>Produce</c>
+                  <c>78.82</c>
+                </r>
+                <r>
+                  <c>2013-06-30</c>
+                  <c>Produce</c>
+                  <c>96.54</c>
+                </r>
+                <r>
+                  <c>2013-07-07</c>
+                  <c>Produce</c>
+                  <c>102.24</c>
+                </r>
+                <r>
+                  <c>2013-07-14</c>
+                  <c>Produce</c>
+                  <c>94.94</c>
+                </r>
+                <r>
+                  <c>2013-07-21</c>
+                  <c>Produce</c>
+                  <c>123.6375</c>
+                </r>
+                <r>
+                  <c>2013-07-28</c>
+                  <c>Produce</c>
+                  <c>85.06</c>
+                </r>
+                <r>
+                  <c>2013-08-04</c>
+                  <c>Produce</c>
+                  <c>84.04</c>
+                </r>
+                <r>
+                  <c>2013-08-11</c>
+                  <c>Produce</c>
+                  <c>99.82</c>
+                </r>
+                <r>
+                  <c>2013-08-18</c>
+                  <c>Produce</c>
+                  <c>85.51</c>
+                </r>
+                <r>
+                  <c>2013-08-25</c>
+                  <c>Produce</c>
+                  <c>83.87</c>
+                </r>
+                <r>
+                  <c>2013-09-01</c>
+                  <c>Produce</c>
+                  <c>105.225</c>
+                </r>
+                <r>
+                  <c>2013-09-08</c>
+                  <c>Produce</c>
+                  <c>109.56</c>
+                </r>
+                <r>
+                  <c>2013-09-15</c>
+                  <c>Produce</c>
+                  <c>92.74</c>
+                </r>
+                <r>
+                  <c>2013-09-22</c>
+                  <c>Produce</c>
+                  <c>87.94</c>
+                </r>
+                <r>
+                  <c>2013-09-29</c>
+                  <c>Produce</c>
+                  <c>89.26</c>
+                </r>
+                <r>
+                  <c>2013-10-06</c>
+                  <c>Produce</c>
+                  <c>2801.76</c>
+                </r>
+                <r>
+                  <c>2013-10-13</c>
+                  <c>Produce</c>
+                  <c>2808.4</c>
+                </r>
+                <r>
+                  <c>2013-10-20</c>
+                  <c>Produce</c>
+                  <c>2793.93</c>
+                </r>
+                <r>
+                  <c>2013-10-27</c>
+                  <c>Produce</c>
+                  <c>2805.65</c>
+                </r>
+                <r>
+                  <c>2013-11-03</c>
+                  <c>Produce</c>
+                  <c>99.1</c>
+                </r>
+                <r>
+                  <c>2013-11-10</c>
+                  <c>Produce</c>
+                  <c>99.65</c>
+                </r>
+                <r>
+                  <c>2013-11-17</c>
+                  <c>Produce</c>
+                  <c>96.88</c>
+                </r>
+                <r>
+                  <c>2013-11-24</c>
+                  <c>Produce</c>
+                  <c>103.77</c>
+                </r>
+                <r>
+                  <c>2013-12-01</c>
+                  <c>Produce</c>
+                  <c>117.62</c>
+                </r>
+                <r>
+                  <c>2013-12-08</c>
+                  <c>Produce</c>
+                  <c>89.17</c>
+                </r>
+                <r>
+                  <c>2013-12-15</c>
+                  <c>Produce</c>
+                  <c>75.39</c>
+                </r>
+                <r>
+                  <c>2013-12-22</c>
+                  <c>Produce</c>
+                  <c>111.53</c>
+                </r>
+                <r>
+                  <c>2013-12-29</c>
+                  <c>Produce</c>
+                  <c>101.46</c>
+                </r>
+                <r>
+                  <c>2014-01-05</c>
+                  <c>Produce</c>
+                  <c>107.04</c>
+                </r>
+                <r>
+                  <c>2014-01-12</c>
+                  <c>Produce</c>
+                  <c>99.61</c>
+                </r>
+                <r>
+                  <c>2014-01-19</c>
+                  <c>Produce</c>
+                  <c>102.77</c>
+                </r>
+                <r>
+                  <c>2014-01-26</c>
+                  <c>Produce</c>
+                  <c>107.79</c>
+                </r>
+                <r>
+                  <c>2014-02-02</c>
+                  <c>Produce</c>
+                  <c>103.33</c>
+                </r>
+                <r>
+                  <c>2014-02-09</c>
+                  <c>Produce</c>
+                  <c>81.5</c>
+                </r>
+                <r>
+                  <c>2014-02-16</c>
+                  <c>Produce</c>
+                  <c>94.5</c>
+                </r>
+                <r>
+                  <c>2014-02-23</c>
+                  <c>Produce</c>
+                  <c>97.57</c>
+                </r>
+                <r>
+                  <c>2014-03-02</c>
+                  <c>Produce</c>
+                  <c>104.53</c>
+                </r>
+                <r>
+                  <c>2014-03-09</c>
+                  <c>Produce</c>
+                  <c>103.02</c>
+                </r>
+                <r>
+                  <c>2014-03-16</c>
+                  <c>Produce</c>
+                  <c>104.31</c>
+                </r>
+                <r>
+                  <c>2014-03-23</c>
+                  <c>Produce</c>
+                  <c>79.5</c>
+                </r>
+                <r>
+                  <c>2014-03-30</c>
+                  <c>Produce</c>
+                  <c>83.57</c>
+                </r>
+                <r>
+                  <c>2014-04-06</c>
+                  <c>Produce</c>
+                  <c>106.41</c>
+                </r>
+                <r>
+                  <c>2014-04-13</c>
+                  <c>Produce</c>
+                  <c>87.63</c>
+                </r>
+                <r>
+                  <c>2014-04-20</c>
+                  <c>Produce</c>
+                  <c>101.44</c>
+                </r>
+                <r>
+                  <c>2014-04-27</c>
+                  <c>Produce</c>
+                  <c>101.62</c>
+                </r>
+                <r>
+                  <c>2014-05-04</c>
+                  <c>Produce</c>
+                  <c>86.32</c>
+                </r>
+                <r>
+                  <c>2014-05-11</c>
+                  <c>Produce</c>
+                  <c>103.51</c>
+                </r>
+                <r>
+                  <c>2014-05-18</c>
+                  <c>Produce</c>
+                  <c>99.77</c>
+                </r>
+                <r>
+                  <c>2014-05-25</c>
+                  <c>Produce</c>
+                  <c>87.78</c>
+                </r>
+                <r>
+                  <c>2014-06-01</c>
+                  <c>Produce</c>
+                  <c>103.43</c>
+                </r>
+                <r>
+                  <c>2014-06-08</c>
+                  <c>Produce</c>
+                  <c>92.53</c>
+                </r>
+                <r>
+                  <c>2014-06-15</c>
+                  <c>Produce</c>
+                  <c>101.48</c>
+                </r>
+                <r>
+                  <c>2014-06-22</c>
+                  <c>Produce</c>
+                  <c>99.35</c>
+                </r>
+                <r>
+                  <c>2014-06-29</c>
+                  <c>Produce</c>
+                  <c>104.26</c>
+                </r>
+                <r>
+                  <c>2014-07-06</c>
+                  <c>Produce</c>
+                  <c>97.41</c>
+                </r>
+                <r>
+                  <c>2014-07-13</c>
+                  <c>Produce</c>
+                  <c>113.65</c>
+                </r>
+                <r>
+                  <c>2014-07-20</c>
+                  <c>Produce</c>
+                  <c>105.81</c>
+                </r>
+                <r>
+                  <c>2014-07-27</c>
+                  <c>Produce</c>
+                  <c>109.79</c>
+                </r>
+                <r>
+                  <c>2014-08-03</c>
+                  <c>Produce</c>
+                  <c>85.79</c>
+                </r>
+                <r>
+                  <c>2014-08-10</c>
+                  <c>Produce</c>
+                  <c>93.64</c>
+                </r>
+                <r>
+                  <c>2014-08-17</c>
+                  <c>Produce</c>
+                  <c>95.64</c>
+                </r>
+                <r>
+                  <c>2014-08-24</c>
+                  <c>Produce</c>
+                  <c>98.89</c>
+                </r>
+                <r>
+                  <c>2014-08-31</c>
+                  <c>Produce</c>
+                  <c>97.19</c>
+                </r>
+                <r>
+                  <c>2014-09-07</c>
+                  <c>Produce</c>
+                  <c>78.38</c>
+                </r>
+                <r>
+                  <c>2014-09-14</c>
+                  <c>Produce</c>
+                  <c>105.58</c>
+                </r>
+                <r>
+                  <c>2014-09-21</c>
+                  <c>Produce</c>
+                  <c>93.85</c>
+                </r>
+                <r>
+                  <c>2014-09-28</c>
+                  <c>Produce</c>
+                  <c>100.69</c>
+                </r>
+                <r>
+                  <c>2014-10-05</c>
+                  <c>Produce</c>
+                  <c>3090.6375</c>
+                </r>
+                <r>
+                  <c>2014-10-12</c>
+                  <c>Produce</c>
+                  <c>3104.48</c>
+                </r>
+                <r>
+                  <c>2014-10-19</c>
+                  <c>Produce</c>
+                  <c>3097.6</c>
+                </r>
+                <r>
+                  <c>2014-10-26</c>
+                  <c>Produce</c>
+                  <c>3110.05</c>
+                </r>
+                <r>
+                  <c>2014-11-02</c>
+                  <c>Produce</c>
+                  <c>86.63</c>
+                </r>
+                <r>
+                  <c>2014-11-09</c>
+                  <c>Produce</c>
+                  <c>88.25</c>
+                </r>
+                <r>
+                  <c>2014-11-16</c>
+                  <c>Produce</c>
+                  <c>98.68</c>
+                </r>
+                <r>
+                  <c>2014-11-23</c>
+                  <c>Produce</c>
+                  <c>96.36</c>
+                </r>
+                <r>
+                  <c>2014-11-30</c>
+                  <c>Produce</c>
+                  <c>104.87</c>
+                </r>
+                <r>
+                  <c>2014-12-07</c>
+                  <c>Produce</c>
+                  <c>95.43</c>
+                </r>
+                <r>
+                  <c>2014-12-14</c>
+                  <c>Produce</c>
+                  <c>87.33</c>
+                </r>
+                <r>
+                  <c>2014-12-21</c>
+                  <c>Produce</c>
+                  <c>93.79</c>
+                </r>
+                <r>
+                  <c>2014-12-28</c>
+                  <c>Produce</c>
+                  <c>80.28</c>
+                </r>
+                <r>
+                  <c>2015-01-04</c>
+                  <c>Produce</c>
+                  <c>94.88</c>
+                </r>
+                <r>
+                  <c>2015-01-11</c>
+                  <c>Produce</c>
+                  <c>101.88</c>
+                </r>
+                <r>
+                  <c>2015-01-18</c>
+                  <c>Produce</c>
+                  <c>108.15</c>
+                </r>
+                <r>
+                  <c>2015-01-25</c>
+                  <c>Produce</c>
+                  <c>85.38</c>
+                </r>
+                <r>
+                  <c>2015-02-01</c>
+                  <c>Produce</c>
+                  <c>88.72</c>
+                </r>
+                <r>
+                  <c>2015-02-08</c>
+                  <c>Produce</c>
+                  <c>81.57</c>
+                </r>
+                <r>
+                  <c>2015-02-15</c>
+                  <c>Produce</c>
+                  <c>114.74</c>
+                </r>
+                <r>
+                  <c>2015-02-22</c>
+                  <c>Produce</c>
+                  <c>111.18</c>
+                </r>
+                <r>
+                  <c>2015-03-01</c>
+                  <c>Produce</c>
+                  <c>95.59</c>
+                </r>
+                <r>
+                  <c>2015-03-08</c>
+                  <c>Produce</c>
+                  <c>100.62</c>
+                </r>
+                <r>
+                  <c>2015-03-15</c>
+                  <c>Produce</c>
+                  <c>103.04</c>
+                </r>
+                <r>
+                  <c>2015-03-22</c>
+                  <c>Produce</c>
+                  <c>99.18</c>
+                </r>
+                <r>
+                  <c>2015-03-29</c>
+                  <c>Produce</c>
+                  <c>82.54</c>
+                </r>
+                <r>
+                  <c>2015-04-05</c>
+                  <c>Produce</c>
+                  <c>94.46</c>
+                </r>
+                <r>
+                  <c>2015-04-12</c>
+                  <c>Produce</c>
+                  <c>92.22</c>
+                </r>
+                <r>
+                  <c>2015-04-19</c>
+                  <c>Produce</c>
+                  <c>90.41</c>
+                </r>
+                <r>
+                  <c>2015-04-26</c>
+                  <c>Produce</c>
+                  <c>109.38</c>
+                </r>
+                <r>
+                  <c>2015-05-03</c>
+                  <c>Produce</c>
+                  <c>108.34</c>
+                </r>
+                <r>
+                  <c>2015-05-10</c>
+                  <c>Produce</c>
+                  <c>76.44</c>
+                </r>
+                <r>
+                  <c>2015-05-17</c>
+                  <c>Produce</c>
+                  <c>104.13</c>
+                </r>
+                <r>
+                  <c>2015-05-24</c>
+                  <c>Produce</c>
+                  <c>102.21</c>
+                </r>
+                <r>
+                  <c>2015-05-31</c>
+                  <c>Produce</c>
+                  <c>107.62</c>
+                </r>
+                <r>
+                  <c>2015-06-07</c>
+                  <c>Produce</c>
+                  <c>91.01</c>
+                </r>
+                <r>
+                  <c>2015-06-14</c>
+                  <c>Produce</c>
+                  <c>98.33</c>
+                </r>
+                <r>
+                  <c>2015-06-21</c>
+                  <c>Produce</c>
+                  <c>83.92</c>
+                </r>
+                <r>
+                  <c>2015-06-28</c>
+                  <c>Produce</c>
+                  <c>88.42</c>
+                </r>
+                <r>
+                  <c>2015-07-05</c>
+                  <c>Produce</c>
+                  <c>114.48</c>
+                </r>
+                <r>
+                  <c>2015-07-12</c>
+                  <c>Produce</c>
+                  <c>89.91</c>
+                </r>
+                <r>
+                  <c>2015-07-19</c>
+                  <c>Produce</c>
+                  <c>96.37</c>
+                </r>
+                <r>
+                  <c>2015-07-26</c>
+                  <c>Produce</c>
+                  <c>93.44</c>
+                </r>
+                <r>
+                  <c>2015-08-02</c>
+                  <c>Produce</c>
+                  <c>103.51</c>
+                </r>
+                <r>
+                  <c>2015-08-09</c>
+                  <c>Produce</c>
+                  <c>101</c>
+                </r>
+                <r>
+                  <c>2015-08-16</c>
+                  <c>Produce</c>
+                  <c>108.66</c>
+                </r>
+                <r>
+                  <c>2015-08-23</c>
+                  <c>Produce</c>
+                  <c>98.41</c>
+                </r>
+                <r>
+                  <c>2015-08-30</c>
+                  <c>Produce</c>
+                  <c>87.27</c>
+                </r>
+                <r>
+                  <c>2015-09-06</c>
+                  <c>Produce</c>
+                  <c>99.9</c>
+                </r>
+                <r>
+                  <c>2015-09-13</c>
+                  <c>Produce</c>
+                  <c>90.3</c>
+                </r>
+                <r>
+                  <c>2015-09-20</c>
+                  <c>Produce</c>
+                  <c>86.64</c>
+                </r>
+                <r>
+                  <c>2015-09-27</c>
+                  <c>Produce</c>
+                  <c>76.38</c>
+                </r>
+                <r>
+                  <c>2015-10-04</c>
+                  <c>Produce</c>
+                  <c>3304.53</c>
+                </r>
+                <r>
+                  <c>2015-10-11</c>
+                  <c>Produce</c>
+                  <c>3293.26</c>
+                </r>
+                <r>
+                  <c>2015-10-18</c>
+                  <c>Produce</c>
+                  <c>3281.81</c>
+                </r>
+                <r>
+                  <c>2015-10-25</c>
+                  <c>Produce</c>
+                  <c>3302.32</c>
+                </r>
+                <r>
+                  <c>2015-11-01</c>
+                  <c>Produce</c>
+                  <c>117.93</c>
+                </r>
+                <r>
+                  <c>2015-11-08</c>
+                  <c>Produce</c>
+                  <c>95.21</c>
+                </r>
+                <r>
+                  <c>2015-11-15</c>
+                  <c>Produce</c>
+                  <c>95.47</c>
+                </r>
+                <r>
+                  <c>2015-11-22</c>
+                  <c>Produce</c>
+                  <c>84.24</c>
+                </r>
+                <r>
+                  <c>2015-11-29</c>
+                  <c>Produce</c>
+                  <c>117.33</c>
+                </r>
+                <r>
+                  <c>2015-12-06</c>
+                  <c>Produce</c>
+                  <c>96.32</c>
+                </r>
+                <r>
+                  <c>2015-12-13</c>
+                  <c>Produce</c>
+                  <c>95.09</c>
+                </r>
+                <r>
+                  <c>2015-12-20</c>
+                  <c>Produce</c>
+                  <c>103.57</c>
+                </r>
+                <r>
+                  <c>2015-12-27</c>
+                  <c>Produce</c>
+                  <c>93.54</c>
+                </r>
+                <r>
+                  <c>2016-01-03</c>
+                  <c>Produce</c>
+                  <c>80.08</c>
+                </r>
+                <r>
+                  <c>2016-01-10</c>
+                  <c>Produce</c>
+                  <c>112.48</c>
+                </r>
+                <r>
+                  <c>2016-01-17</c>
+                  <c>Produce</c>
+                  <c>97.27</c>
+                </r>
+                <r>
+                  <c>2016-01-24</c>
+                  <c>Produce</c>
+                  <c>86.99</c>
+                </r>
+                <r>
+                  <c>2016-01-31</c>
+                  <c>Produce</c>
+                  <c>102.38</c>
+                </r>
+                <r>
+                  <c>2016-02-07</c>
+                  <c>Produce</c>
+                  <c>105.51</c>
+                </r>
+                <r>
+                  <c>2016-02-14</c>
+                  <c>Produce</c>
+                  <c>89.8</c>
+                </r>
+                <r>
+                  <c>2016-02-21</c>
+                  <c>Produce</c>
+                  <c>78.14</c>
+                </r>
+                <r>
+                  <c>2016-02-28</c>
+                  <c>Produce</c>
+                  <c>102.47</c>
+                </r>
+                <r>
+                  <c>2016-03-06</c>
+                  <c>Produce</c>
+                  <c>100.2</c>
+                </r>
+                <r>
+                  <c>2016-03-13</c>
+                  <c>Produce</c>
+                  <c>81.78</c>
+                </r>
+                <r>
+                  <c>2016-03-20</c>
+                  <c>Produce</c>
+                  <c>102.58</c>
+                </r>
+                <r>
+                  <c>2016-03-27</c>
+                  <c>Produce</c>
+                  <c>95.63</c>
+                </r>
+                <r>
+                  <c>2016-04-03</c>
+                  <c>Produce</c>
+                  <c>96.51</c>
+                </r>
+                <r>
+                  <c>2016-04-10</c>
+                  <c>Produce</c>
+                  <c>102.72</c>
+                </r>
+                <r>
+                  <c>2016-04-17</c>
+                  <c>Produce</c>
+                  <c>82.79</c>
+                </r>
+                <r>
+                  <c>2016-04-24</c>
+                  <c>Produce</c>
+                  <c>73.35</c>
+                </r>
+                <r>
+                  <c>2016-05-01</c>
+                  <c>Produce</c>
+                  <c>88.87</c>
+                </r>
+                <r>
+                  <c>2016-05-08</c>
+                  <c>Produce</c>
+                  <c>106.8</c>
+                </r>
+                <r>
+                  <c>2016-05-15</c>
+                  <c>Produce</c>
+                  <c>102.58</c>
+                </r>
+                <r>
+                  <c>2016-05-22</c>
+                  <c>Produce</c>
+                  <c>95.44</c>
+                </r>
+                <r>
+                  <c>2016-05-29</c>
+                  <c>Produce</c>
+                  <c>94.33</c>
+                </r>
+                <r>
+                  <c>2016-06-05</c>
+                  <c>Produce</c>
+                  <c>92.96</c>
+                </r>
+                <r>
+                  <c>2016-06-12</c>
+                  <c>Produce</c>
+                  <c>105.71</c>
+                </r>
+                <r>
+                  <c>2016-06-19</c>
+                  <c>Produce</c>
+                  <c>114.31</c>
+                </r>
+                <r>
+                  <c>2016-06-26</c>
+                  <c>Produce</c>
+                  <c>83.75</c>
+                </r>
+                <r>
+                  <c>2016-07-03</c>
+                  <c>Produce</c>
+                  <c>95.01</c>
+                </r>
+                <r>
+                  <c>2016-07-10</c>
+                  <c>Produce</c>
+                  <c>94.02</c>
+                </r>
+                <r>
+                  <c>2016-07-17</c>
+                  <c>Produce</c>
+                  <c>85.95</c>
+                </r>
+                <r>
+                  <c>2016-07-24</c>
+                  <c>Produce</c>
+                  <c>96.3</c>
+                </r>
+                <r>
+                  <c>2016-07-31</c>
+                  <c>Produce</c>
+                  <c>97.66</c>
+                </r>
+                <r>
+                  <c>2016-08-07</c>
+                  <c>Produce</c>
+                  <c>109.06</c>
+                </r>
+                <r>
+                  <c>2016-08-14</c>
+                  <c>Produce</c>
+                  <c>108.75</c>
+                </r>
+                <r>
+                  <c>2016-08-21</c>
+                  <c>Produce</c>
+                  <c>102.37</c>
+                </r>
+                <r>
+                  <c>2016-08-28</c>
+                  <c>Produce</c>
+                  <c>100.55</c>
+                </r>
+                <r>
+                  <c>2016-09-04</c>
+                  <c>Produce</c>
+                  <c>81.88</c>
+                </r>
+                <r>
+                  <c>2016-09-11</c>
+                  <c>Produce</c>
+                  <c>92.93</c>
+                </r>
+                <r>
+                  <c>2016-09-18</c>
+                  <c>Produce</c>
+                  <c>114.97</c>
+                </r>
+                <r>
+                  <c>2016-09-25</c>
+                  <c>Produce</c>
+                  <c>106.27</c>
+                </r>
+                <r>
+                  <c>2016-10-02</c>
+                  <c>Produce</c>
+                  <c>3420.08</c>
+                </r>
+                <r>
+                  <c>2016-10-09</c>
+                  <c>Produce</c>
+                  <c>3395.73</c>
+                </r>
+                <r>
+                  <c>2016-10-16</c>
+                  <c>Produce</c>
+                  <c>3394.92</c>
+                </r>
+                <r>
+                  <c>2016-10-23</c>
+                  <c>Produce</c>
+                  <c>3393.98</c>
+                </r>
+                <r>
+                  <c>2016-10-30</c>
+                  <c>Produce</c>
+                  <c>3385.34</c>
+                </r>
+                <r>
+                  <c>2016-11-06</c>
+                  <c>Produce</c>
+                  <c>81.63</c>
+                </r>
+                <r>
+                  <c>2016-11-13</c>
+                  <c>Produce</c>
+                  <c>100.63</c>
+                </r>
+                <r>
+                  <c>2016-11-20</c>
+                  <c>Produce</c>
+                  <c>111</c>
+                </r>
+                <r>
+                  <c>2016-11-27</c>
+                  <c>Produce</c>
+                  <c>69.62</c>
+                </r>
+                <r>
+                  <c>2016-12-04</c>
+                  <c>Produce</c>
+                  <c>105.25</c>
+                </r>
+                <r>
+                  <c>2016-12-11</c>
+                  <c>Produce</c>
+                  <c>92.79</c>
+                </r>
+                <r>
+                  <c>2016-12-18</c>
+                  <c>Produce</c>
+                  <c>77.13</c>
+                </r>
+                <r>
+                  <c>2016-12-25</c>
+                  <c>Produce</c>
+                  <c>103.83</c>
+                </r>
+              </Data>
+            </Configuration>
+          </TextInput>
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+        <MetaInfo connection="Output">
+          <RecordInfo>
+            <Field name="Week_Start" source="TextInput:" type="Date" />
+            <Field name="Product" size="7" source="TextInput:" type="String" />
+            <Field name="Sales" source="TextInput:" type="Double" />
+          </RecordInfo>
+        </MetaInfo>
+      </Properties>
+      <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxMacroInput" />
+    </Node>
+    <Node ToolID="35">
+      <GuiSettings Plugin="AlteryxGuiToolkit.ToolContainer.ToolContainer">
+        <Position x="558" y="54" width="625" height="327" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <Caption>Forecast sales</Caption>
+          <Style TextColor="#314c4a" FillColor="#ecf2f2" BorderColor="#314c4a" Transparency="25" Margin="25" />
+          <Disabled value="False" />
+          <Folded value="False" />
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <ChildNodes>
+        <Node ToolID="22">
+          <GuiSettings>
+            <Position x="799" y="115" />
+          </GuiSettings>
+          <Properties>
+            <Configuration>
+              <Value name="forecast">forecast</Value>
+              <Value name="large_conf">95</Value>
+              <Value name="small_conf">80</Value>
+              <Value name="horizon">52</Value>
+              <Value name="inches">True</Value>
+              <Value name="in.w">5.50</Value>
+              <Value name="in.h">5.50</Value>
+              <Value name="centimeters">False</Value>
+              <Value name="cm.w">13.00</Value>
+              <Value name="cm.h">14.95</Value>
+              <Value name="graph.resolution">1x</Value>
+              <Value name="pointsize">10</Value>
+            </Configuration>
+            <Annotation DisplayMode="0">
+              <Name />
+              <AnnotationText>Forecast 52 weeks using tsARIMA</AnnotationText>
+              <DefaultAnnotationText />
+              <Left value="False" />
+            </Annotation>
+            <MetaInfo connection="Output">
+              <RecordInfo>
+                <Field name="Period" source="R-DATA:" type="Double" />
+                <Field name="Sub_Period" source="R-DATA:" type="Int32" />
+                <Field name="forecast" source="R-DATA:" type="Double" />
+                <Field name="forecast_high_95" source="R-DATA:" type="Double" />
+                <Field name="forecast_high_80" source="R-DATA:" type="Double" />
+                <Field name="forecast_low_80" source="R-DATA:" type="Double" />
+                <Field name="forecast_low_95" source="R-DATA:" type="Double" />
+              </RecordInfo>
+            </MetaInfo>
+            <MetaInfo connection="Interactive Viz">
+              <RecordInfo>
+                <Field name="Text" size="2147483647" source="Report:Text:" type="V_String" />
+              </RecordInfo>
+            </MetaInfo>
+            <MetaInfo connection="Report">
+              <RecordInfo>
+                <Field name="Report" size="1073741823" source="Report: (Multiple Sources)" type="V_WString" />
+                <Field name="Desc" size="64" source="Formula: (Multiple Sources)" type="V_String" />
+              </RecordInfo>
+            </MetaInfo>
+          </Properties>
+          <EngineSettings Macro="Predictive Tools\TS_Forecast.yxmc" />
+        </Node>
+        <Node ToolID="23">
+          <GuiSettings>
+            <Position x="799" y="259" />
+          </GuiSettings>
+          <Properties>
+            <Configuration>
+              <Value name="forecast">forecast</Value>
+              <Value name="large_conf">95</Value>
+              <Value name="small_conf">80</Value>
+              <Value name="horizon">52</Value>
+              <Value name="inches">True</Value>
+              <Value name="in.w">5.50</Value>
+              <Value name="in.h">5.50</Value>
+              <Value name="centimeters">False</Value>
+              <Value name="cm.w">13.00</Value>
+              <Value name="cm.h">14.95</Value>
+              <Value name="graph.resolution">1x</Value>
+              <Value name="pointsize">10</Value>
+            </Configuration>
+            <Annotation DisplayMode="0">
+              <Name />
+              <AnnotationText>Forecast 52 weeks using tsETS</AnnotationText>
+              <DefaultAnnotationText />
+              <Left value="False" />
+            </Annotation>
+            <MetaInfo connection="Output">
+              <RecordInfo>
+                <Field name="Period" source="R-DATA:" type="Double" />
+                <Field name="Sub_Period" source="R-DATA:" type="Int32" />
+                <Field name="forecast" source="R-DATA:" type="Double" />
+                <Field name="forecast_high_95" source="R-DATA:" type="Double" />
+                <Field name="forecast_high_80" source="R-DATA:" type="Double" />
+                <Field name="forecast_low_80" source="R-DATA:" type="Double" />
+                <Field name="forecast_low_95" source="R-DATA:" type="Double" />
+              </RecordInfo>
+            </MetaInfo>
+            <MetaInfo connection="Interactive Viz">
+              <RecordInfo>
+                <Field name="Text" size="2147483647" source="Report:Text:" type="V_String" />
+              </RecordInfo>
+            </MetaInfo>
+            <MetaInfo connection="Report">
+              <RecordInfo>
+                <Field name="Report" size="1073741823" source="Report: (Multiple Sources)" type="V_WString" />
+                <Field name="Desc" size="64" source="Formula: (Multiple Sources)" type="V_String" />
+              </RecordInfo>
+            </MetaInfo>
+          </Properties>
+          <EngineSettings Macro="Predictive Tools\TS_Forecast.yxmc" />
+        </Node>
+        <Node ToolID="24">
+          <GuiSettings Plugin="AlteryxBasePluginsGui.Formula.Formula">
+            <Position x="943" y="115" />
+          </GuiSettings>
+          <Properties>
+            <Configuration>
+              <FormulaFields>
+                <FormulaField expression="'tsARIMA'" field="model" size="1073741823" type="V_WString" />
+              </FormulaFields>
+            </Configuration>
+            <Annotation DisplayMode="0">
+              <Name />
+              <AnnotationText>Create model name for join</AnnotationText>
+              <DefaultAnnotationText><![CDATA[model = 'tsARIMA'
+]]></DefaultAnnotationText>
+              <Left value="False" />
+            </Annotation>
+            <MetaInfo connection="Output">
+              <RecordInfo>
+                <Field name="Period" source="R-DATA:" type="Double" />
+                <Field name="Sub_Period" source="R-DATA:" type="Int32" />
+                <Field name="forecast" source="R-DATA:" type="Double" />
+                <Field name="forecast_high_95" source="R-DATA:" type="Double" />
+                <Field name="forecast_high_80" source="R-DATA:" type="Double" />
+                <Field name="forecast_low_80" source="R-DATA:" type="Double" />
+                <Field name="forecast_low_95" source="R-DATA:" type="Double" />
+                <Field name="model" size="1073741823" source="Formula: 'tsARIMA'" type="V_WString" />
+              </RecordInfo>
+            </MetaInfo>
+          </Properties>
+          <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxFormula" />
+        </Node>
+        <Node ToolID="25">
+          <GuiSettings Plugin="AlteryxBasePluginsGui.Formula.Formula">
+            <Position x="943" y="259" />
+          </GuiSettings>
+          <Properties>
+            <Configuration>
+              <FormulaFields>
+                <FormulaField expression="'tsETS'" field="model" size="1073741823" type="V_WString" />
+              </FormulaFields>
+            </Configuration>
+            <Annotation DisplayMode="0">
+              <Name />
+              <AnnotationText>Create model name for join</AnnotationText>
+              <DefaultAnnotationText><![CDATA[model = 'tsETS'
+]]></DefaultAnnotationText>
+              <Left value="False" />
+            </Annotation>
+            <MetaInfo connection="Output">
+              <RecordInfo>
+                <Field name="Period" source="R-DATA:" type="Double" />
+                <Field name="Sub_Period" source="R-DATA:" type="Int32" />
+                <Field name="forecast" source="R-DATA:" type="Double" />
+                <Field name="forecast_high_95" source="R-DATA:" type="Double" />
+                <Field name="forecast_high_80" source="R-DATA:" type="Double" />
+                <Field name="forecast_low_80" source="R-DATA:" type="Double" />
+                <Field name="forecast_low_95" source="R-DATA:" type="Double" />
+                <Field name="model" size="1073741823" source="Formula: 'tsETS'" type="V_WString" />
+              </RecordInfo>
+            </MetaInfo>
+          </Properties>
+          <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxFormula" />
+        </Node>
+        <Node ToolID="26">
+          <GuiSettings Plugin="AlteryxBasePluginsGui.Union.Union">
+            <Position x="1099" y="163" />
+          </GuiSettings>
+          <Properties>
+            <Configuration>
+              <ByName_ErrorMode>Warning</ByName_ErrorMode>
+              <ByName_OutputMode>All</ByName_OutputMode>
+              <Mode>ByName</Mode>
+              <SetOutputOrder value="False" />
+            </Configuration>
+            <Annotation DisplayMode="0">
+              <Name />
+              <DefaultAnnotationText />
+              <Left value="False" />
+            </Annotation>
+            <MetaInfo connection="Output">
+              <RecordInfo>
+                <Field name="Period" source="R-DATA:" type="Double" />
+                <Field name="Sub_Period" source="R-DATA:" type="Int32" />
+                <Field name="forecast" source="R-DATA:" type="Double" />
+                <Field name="forecast_high_95" source="R-DATA:" type="Double" />
+                <Field name="forecast_high_80" source="R-DATA:" type="Double" />
+                <Field name="forecast_low_80" source="R-DATA:" type="Double" />
+                <Field name="forecast_low_95" source="R-DATA:" type="Double" />
+                <Field name="model" size="1073741823" source="Formula: (Multiple Sources)" type="V_WString" />
+              </RecordInfo>
+            </MetaInfo>
+          </Properties>
+          <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxUnion" />
+        </Node>
+        <Node ToolID="32">
+          <GuiSettings>
+            <Position x="583" y="103" />
+          </GuiSettings>
+          <Properties>
+            <Configuration>
+              <Value name="mod_name">tsARIMA</Value>
+              <Value name="target_field">Sales</Value>
+              <Value name="use_covar">False</Value>
+              <Value name="covars">"Product", "Sales"</Value>
+              <Value name="use_covar_mean">True</Value>
+              <Value name="use_covar_diff">False</Value>
+              <Value name="freq_hourly">False</Value>
+              <Value name="freq_daily">False</Value>
+              <Value name="freq_weekdays">False</Value>
+              <Value name="freq_weekly">True</Value>
+              <Value name="freq_monthly">False</Value>
+              <Value name="freq_quarterly">False</Value>
+              <Value name="freq_annually">False</Value>
+              <Value name="freq_other">False</Value>
+              <Value name="custom_auto">True</Value>
+              <Value name="first_dif">False</Value>
+              <Value name="level_first_dif">0</Value>
+              <Value name="max_p">2</Value>
+              <Value name="max_q">2</Value>
+              <Value name="seas_dif">False</Value>
+              <Value name="level_seas_dif">0</Value>
+              <Value name="s_max_P">1</Value>
+              <Value name="s_max_Q">1</Value>
+              <Value name="ic_aic">False</Value>
+              <Value name="ic_aicc">True</Value>
+              <Value name="ic_bic">False</Value>
+              <Value name="full_enum">False</Value>
+              <Value name="max_order">5</Value>
+              <Value name="m_core">False</Value>
+              <Value name="drift">True</Value>
+              <Value name="box_cox">False</Value>
+              <Value name="lambda">0.00</Value>
+              <Value name="full_custom">False</Value>
+              <Value name="p">0</Value>
+              <Value name="d">0</Value>
+              <Value name="q">0</Value>
+              <Value name="S_P">0</Value>
+              <Value name="S_D">0</Value>
+              <Value name="S_Q">0</Value>
+              <Value name="m_drift">False</Value>
+              <Value name="m_box_cox">False</Value>
+              <Value name="m_lambda">0.00</Value>
+              <Value name="series_start">True</Value>
+              <Value name="start_year">2010</Value>
+              <Value name="start_month_qtr">1</Value>
+              <Value name="forecast_periods">52</Value>
+              <Value name="alteryx.week.US">True</Value>
+              <Value name="alteryx.week.UK">False</Value>
+              <Value name="alteryx.week.ISO8601">False</Value>
+              <Value name="inches">True</Value>
+              <Value name="in.w">5.00</Value>
+              <Value name="in.h">5.50</Value>
+              <Value name="centimeters">False</Value>
+              <Value name="cm.w">13.00</Value>
+              <Value name="cm.h">14.95</Value>
+              <Value name="graph.resolution">1x</Value>
+              <Value name="pointsize">10</Value>
+            </Configuration>
+            <Annotation DisplayMode="0">
+              <Name />
+              <AnnotationText>Create ARIMA time series model (without holdout group)</AnnotationText>
+              <DefaultAnnotationText />
+              <Left value="False" />
+            </Annotation>
+            <Dependencies>
+              <Implicit />
+            </Dependencies>
+            <MetaInfo connection="Report">
+              <RecordInfo>
+                <Field name="Report" size="1073741823" source="Report: (Multiple Sources)" type="V_WString" />
+                <Field name="Desc" size="64" source="Formula: (Multiple Sources)" type="V_WString" />
+              </RecordInfo>
+            </MetaInfo>
+            <MetaInfo connection="Output">
+              <RecordInfo>
+                <Field name="Name" size="1073741823" source="R-DATA:" type="V_WString" />
+                <Field name="Object" size="2147483647" source="R-DATA:SERIAL" type="Blob" />
+              </RecordInfo>
+              <ForceUpdate />
+            </MetaInfo>
+            <MetaInfo connection="Interactive">
+              <RecordInfo>
+                <Field name="Text" size="2147483647" source="Report:Text:" type="V_String" />
+              </RecordInfo>
+            </MetaInfo>
+          </Properties>
+          <EngineSettings Macro="Predictive Tools\ARIMA.yxmc" />
+        </Node>
+        <Node ToolID="33">
+          <GuiSettings>
+            <Position x="583" y="235" />
+          </GuiSettings>
+          <Properties>
+            <Configuration>
+              <Value name="mod_name">tsETS</Value>
+              <Value name="target_field">Sales</Value>
+              <Value name="freq_hourly">False</Value>
+              <Value name="freq_daily">False</Value>
+              <Value name="freq_weekdays">False</Value>
+              <Value name="freq_weekly">True</Value>
+              <Value name="freq_monthly">False</Value>
+              <Value name="freq_quarterly">False</Value>
+              <Value name="freq_annually">False</Value>
+              <Value name="freq_other">False</Value>
+              <Value name="error_auto">True</Value>
+              <Value name="error_add">False</Value>
+              <Value name="error_mult">False</Value>
+              <Value name="trend_type_auto">True</Value>
+              <Value name="trend_type_add">False</Value>
+              <Value name="trend_type_mult">False</Value>
+              <Value name="trend_type_none">False</Value>
+              <Value name="trend_damp_auto">True</Value>
+              <Value name="trend_damp_yes">False</Value>
+              <Value name="trend_damp_no">False</Value>
+              <Value name="seas_auto">True</Value>
+              <Value name="seas_add">False</Value>
+              <Value name="seas_mult">False</Value>
+              <Value name="seas_none">False</Value>
+              <Value name="ic_auto">True</Value>
+              <Value name="ic_aic">False</Value>
+              <Value name="ic_aicc">False</Value>
+              <Value name="ic_bic">False</Value>
+              <Value name="box_cox">False</Value>
+              <Value name="lambda">0.00</Value>
+              <Value name="series_start">True</Value>
+              <Value name="start_year">2010</Value>
+              <Value name="start_month_qtr">1</Value>
+              <Value name="forecast_periods">6</Value>
+              <Value name="alteryx.week.US">True</Value>
+              <Value name="alteryx.week.UK">False</Value>
+              <Value name="alteryx.week.ISO8601">False</Value>
+              <Value name="inches">True</Value>
+              <Value name="in.w">5.50</Value>
+              <Value name="in.h">5.50</Value>
+              <Value name="centimeters">False</Value>
+              <Value name="cm.w">13.00</Value>
+              <Value name="cm.h">14.95</Value>
+              <Value name="graph.resolution">1x</Value>
+              <Value name="pointsize">10</Value>
+            </Configuration>
+            <Annotation DisplayMode="0">
+              <Name />
+              <AnnotationText>Create ETS time series model (without holdout group)</AnnotationText>
+              <DefaultAnnotationText />
+              <Left value="False" />
+            </Annotation>
+            <MetaInfo connection="Report">
+              <RecordInfo>
+                <Field name="Report" size="2147483647" source="Report: (Multiple Sources)" type="V_String" />
+                <Field name="Desc" size="64" source="Formula: (Multiple Sources)" type="V_WString" />
+              </RecordInfo>
+            </MetaInfo>
+            <MetaInfo connection="Output">
+              <RecordInfo>
+                <Field name="Name" size="1073741823" source="R-DATA:" type="V_WString" />
+                <Field name="Object" size="2147483647" source="R-DATA:SERIAL" type="Blob" />
+              </RecordInfo>
+              <ForceUpdate />
+            </MetaInfo>
+            <MetaInfo connection="Interactive">
+              <RecordInfo>
+                <Field name="Text" size="2147483647" source="Report:Text:" type="V_String" />
+              </RecordInfo>
+            </MetaInfo>
+          </Properties>
+          <EngineSettings Macro="Predictive Tools\ETS.yxmc" />
+        </Node>
+      </ChildNodes>
+    </Node>
+    <Node ToolID="34">
+      <GuiSettings Plugin="AlteryxGuiToolkit.ToolContainer.ToolContainer">
+        <Position x="522" y="462" width="867" height="435" />
+      </GuiSettings>
+      <Properties>
+        <Configuration>
+          <Caption>Determine whether to use ARIMA or ETS</Caption>
+          <Style TextColor="#314c4a" FillColor="#ecf2f2" BorderColor="#314c4a" Transparency="25" Margin="25" />
+          <Disabled value="False" />
+          <Folded value="False" />
+        </Configuration>
+        <Annotation DisplayMode="0">
+          <Name />
+          <DefaultAnnotationText />
+          <Left value="False" />
+        </Annotation>
+      </Properties>
+      <ChildNodes>
+        <Node ToolID="7">
+          <GuiSettings Plugin="AlteryxBasePluginsGui.Filter.Filter">
+            <Position x="547" y="511" />
+          </GuiSettings>
+          <Properties>
+            <Configuration>
+              <Expression>[Week_Start] &lt; [Holdout Cutoff]</Expression>
+              <Mode>Custom</Mode>
+              <Simple>
+                <Operator>&lt;</Operator>
+                <Field>Week_Start</Field>
+                <Operands>
+                  <IgnoreTimeInDateTime>True</IgnoreTimeInDateTime>
+                  <DateType>fixed</DateType>
+                  <PeriodDate>2020-10-29 07:49:33</PeriodDate>
+                  <PeriodType>days</PeriodType>
+                  <PeriodCount>0</PeriodCount>
+                  <Operand>2020-10-29</Operand>
+                  <StartDate>2020-10-29 07:49:33</StartDate>
+                  <EndDate>2020-10-29 07:49:33</EndDate>
+                </Operands>
+              </Simple>
+            </Configuration>
+            <Annotation DisplayMode="0">
+              <Name />
+              <AnnotationText>Filter to where week start is before holdout cutoff</AnnotationText>
+              <DefaultAnnotationText>[Week_Start] &lt; [Holdout Cutoff]</DefaultAnnotationText>
+              <Left value="False" />
+            </Annotation>
+            <MetaInfo connection="True">
+              <RecordInfo>
+                <Field name="Week_Start" source="TextInput:" type="Date" />
+                <Field name="Product" size="7" source="TextInput:" type="String" />
+                <Field name="Sales" source="TextInput:" type="Double" />
+                <Field name="Holdout Cutoff" source="Formula: DateTimeAdd([Holdout Cutoff],-1,'year')" type="Date" />
+              </RecordInfo>
+            </MetaInfo>
+            <MetaInfo connection="False">
+              <RecordInfo>
+                <Field name="Week_Start" source="TextInput:" type="Date" />
+                <Field name="Product" size="7" source="TextInput:" type="String" />
+                <Field name="Sales" source="TextInput:" type="Double" />
+                <Field name="Holdout Cutoff" source="Formula: DateTimeAdd([Holdout Cutoff],-1,'year')" type="Date" />
+              </RecordInfo>
+            </MetaInfo>
+          </Properties>
+          <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxFilter" />
+        </Node>
+        <Node ToolID="11">
+          <GuiSettings>
+            <Position x="703" y="511" />
+          </GuiSettings>
+          <Properties>
+            <Configuration>
+              <Value name="mod_name">tsARIMA</Value>
+              <Value name="target_field">Sales</Value>
+              <Value name="use_covar">False</Value>
+              <Value name="covars">"Product", "Sales"</Value>
+              <Value name="use_covar_mean">True</Value>
+              <Value name="use_covar_diff">False</Value>
+              <Value name="freq_hourly">False</Value>
+              <Value name="freq_daily">False</Value>
+              <Value name="freq_weekdays">False</Value>
+              <Value name="freq_weekly">True</Value>
+              <Value name="freq_monthly">False</Value>
+              <Value name="freq_quarterly">False</Value>
+              <Value name="freq_annually">False</Value>
+              <Value name="freq_other">False</Value>
+              <Value name="custom_auto">True</Value>
+              <Value name="first_dif">False</Value>
+              <Value name="level_first_dif">0</Value>
+              <Value name="max_p">2</Value>
+              <Value name="max_q">2</Value>
+              <Value name="seas_dif">False</Value>
+              <Value name="level_seas_dif">0</Value>
+              <Value name="s_max_P">1</Value>
+              <Value name="s_max_Q">1</Value>
+              <Value name="ic_aic">False</Value>
+              <Value name="ic_aicc">True</Value>
+              <Value name="ic_bic">False</Value>
+              <Value name="full_enum">False</Value>
+              <Value name="max_order">5</Value>
+              <Value name="m_core">False</Value>
+              <Value name="drift">True</Value>
+              <Value name="box_cox">False</Value>
+              <Value name="lambda">0.00</Value>
+              <Value name="full_custom">False</Value>
+              <Value name="p">0</Value>
+              <Value name="d">0</Value>
+              <Value name="q">0</Value>
+              <Value name="S_P">0</Value>
+              <Value name="S_D">0</Value>
+              <Value name="S_Q">0</Value>
+              <Value name="m_drift">False</Value>
+              <Value name="m_box_cox">False</Value>
+              <Value name="m_lambda">0.00</Value>
+              <Value name="series_start">True</Value>
+              <Value name="start_year">2010</Value>
+              <Value name="start_month_qtr">1</Value>
+              <Value name="forecast_periods">52</Value>
+              <Value name="alteryx.week.US">True</Value>
+              <Value name="alteryx.week.UK">False</Value>
+              <Value name="alteryx.week.ISO8601">False</Value>
+              <Value name="inches">True</Value>
+              <Value name="in.w">5.00</Value>
+              <Value name="in.h">5.50</Value>
+              <Value name="centimeters">False</Value>
+              <Value name="cm.w">13.00</Value>
+              <Value name="cm.h">14.95</Value>
+              <Value name="graph.resolution">1x</Value>
+              <Value name="pointsize">10</Value>
+            </Configuration>
+            <Annotation DisplayMode="0">
+              <Name />
+              <AnnotationText>Create ARIMA time series model (without holdout group)</AnnotationText>
+              <DefaultAnnotationText />
+              <Left value="False" />
+            </Annotation>
+            <Dependencies>
+              <Implicit />
+            </Dependencies>
+            <MetaInfo connection="Report">
+              <RecordInfo>
+                <Field name="Report" size="1073741823" source="Report: (Multiple Sources)" type="V_WString" />
+                <Field name="Desc" size="64" source="Formula: (Multiple Sources)" type="V_WString" />
+              </RecordInfo>
+            </MetaInfo>
+            <MetaInfo connection="Output">
+              <RecordInfo>
+                <Field name="Name" size="1073741823" source="R-DATA:" type="V_WString" />
+                <Field name="Object" size="2147483647" source="R-DATA:SERIAL" type="Blob" />
+              </RecordInfo>
+              <ForceUpdate />
+            </MetaInfo>
+            <MetaInfo connection="Interactive">
+              <RecordInfo>
+                <Field name="Text" size="2147483647" source="Report:Text:" type="V_String" />
+              </RecordInfo>
+            </MetaInfo>
+          </Properties>
+          <EngineSettings Macro="Predictive Tools\ARIMA.yxmc" />
+        </Node>
+        <Node ToolID="12">
+          <GuiSettings>
+            <Position x="703" y="643" />
+          </GuiSettings>
+          <Properties>
+            <Configuration>
+              <Value name="mod_name">tsETS</Value>
+              <Value name="target_field">Sales</Value>
+              <Value name="freq_hourly">False</Value>
+              <Value name="freq_daily">False</Value>
+              <Value name="freq_weekdays">False</Value>
+              <Value name="freq_weekly">True</Value>
+              <Value name="freq_monthly">False</Value>
+              <Value name="freq_quarterly">False</Value>
+              <Value name="freq_annually">False</Value>
+              <Value name="freq_other">False</Value>
+              <Value name="error_auto">True</Value>
+              <Value name="error_add">False</Value>
+              <Value name="error_mult">False</Value>
+              <Value name="trend_type_auto">True</Value>
+              <Value name="trend_type_add">False</Value>
+              <Value name="trend_type_mult">False</Value>
+              <Value name="trend_type_none">False</Value>
+              <Value name="trend_damp_auto">True</Value>
+              <Value name="trend_damp_yes">False</Value>
+              <Value name="trend_damp_no">False</Value>
+              <Value name="seas_auto">True</Value>
+              <Value name="seas_add">False</Value>
+              <Value name="seas_mult">False</Value>
+              <Value name="seas_none">False</Value>
+              <Value name="ic_auto">True</Value>
+              <Value name="ic_aic">False</Value>
+              <Value name="ic_aicc">False</Value>
+              <Value name="ic_bic">False</Value>
+              <Value name="box_cox">False</Value>
+              <Value name="lambda">0.00</Value>
+              <Value name="series_start">True</Value>
+              <Value name="start_year">2010</Value>
+              <Value name="start_month_qtr">1</Value>
+              <Value name="forecast_periods">6</Value>
+              <Value name="alteryx.week.US">True</Value>
+              <Value name="alteryx.week.UK">False</Value>
+              <Value name="alteryx.week.ISO8601">False</Value>
+              <Value name="inches">True</Value>
+              <Value name="in.w">5.50</Value>
+              <Value name="in.h">5.50</Value>
+              <Value name="centimeters">False</Value>
+              <Value name="cm.w">13.00</Value>
+              <Value name="cm.h">14.95</Value>
+              <Value name="graph.resolution">1x</Value>
+              <Value name="pointsize">10</Value>
+            </Configuration>
+            <Annotation DisplayMode="0">
+              <Name />
+              <AnnotationText>Create ETS time series model (without holdout group)</AnnotationText>
+              <DefaultAnnotationText />
+              <Left value="False" />
+            </Annotation>
+            <MetaInfo connection="Report">
+              <RecordInfo>
+                <Field name="Report" size="2147483647" source="Report: (Multiple Sources)" type="V_String" />
+                <Field name="Desc" size="64" source="Formula: (Multiple Sources)" type="V_WString" />
+              </RecordInfo>
+            </MetaInfo>
+            <MetaInfo connection="Output">
+              <RecordInfo>
+                <Field name="Name" size="1073741823" source="R-DATA:" type="V_WString" />
+                <Field name="Object" size="2147483647" source="R-DATA:SERIAL" type="Blob" />
+              </RecordInfo>
+              <ForceUpdate />
+            </MetaInfo>
+            <MetaInfo connection="Interactive">
+              <RecordInfo>
+                <Field name="Text" size="2147483647" source="Report:Text:" type="V_String" />
+              </RecordInfo>
+            </MetaInfo>
+          </Properties>
+          <EngineSettings Macro="Predictive Tools\ETS.yxmc" />
+        </Node>
+        <Node ToolID="15">
+          <GuiSettings Plugin="AlteryxBasePluginsGui.Union.Union">
+            <Position x="883" y="679" />
+          </GuiSettings>
+          <Properties>
+            <Configuration>
+              <ByName_ErrorMode>Warning</ByName_ErrorMode>
+              <ByName_OutputMode>All</ByName_OutputMode>
+              <Mode>ByPos</Mode>
+              <SetOutputOrder value="False" />
+            </Configuration>
+            <Annotation DisplayMode="0">
+              <Name />
+              <AnnotationText>Union ts models</AnnotationText>
+              <DefaultAnnotationText />
+              <Left value="False" />
+            </Annotation>
+            <MetaInfo connection="Output">
+              <RecordInfo>
+                <Field name="Name" size="1073741823" source="R-DATA:" type="V_WString" />
+                <Field name="Object" size="2147483647" source="R-DATA:SERIAL" type="Blob" />
+              </RecordInfo>
+            </MetaInfo>
+          </Properties>
+          <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxUnion" />
+        </Node>
+        <Node ToolID="17">
+          <GuiSettings>
+            <Position x="1039" y="751" />
+          </GuiSettings>
+          <Properties>
+            <Configuration>
+              <Value name="inches">True</Value>
+              <Value name="in.w">5.50</Value>
+              <Value name="in.h">5.50</Value>
+              <Value name="centimeters">False</Value>
+              <Value name="cm.w">13.00</Value>
+              <Value name="cm.h">14.95</Value>
+              <Value name="graph.resolution">1x</Value>
+              <Value name="pointsize">10</Value>
+            </Configuration>
+            <Annotation DisplayMode="0">
+              <Name />
+              <AnnotationText>Compare accuracy measures of ts models</AnnotationText>
+              <DefaultAnnotationText />
+              <Left value="False" />
+            </Annotation>
+            <MetaInfo connection="Report">
+              <RecordInfo>
+                <Field name="Report" size="1073741823" source="Report: (Multiple Sources)" type="V_WString" />
+                <Field name="Desc" size="64" source="Formula: (Multiple Sources)" type="V_String" />
+              </RecordInfo>
+            </MetaInfo>
+            <MetaInfo connection="Interactive">
+              <RecordInfo>
+                <Field name="Text" size="2147483647" source="Report:Text:" type="V_String" />
+              </RecordInfo>
+            </MetaInfo>
+            <MetaInfo connection="Output">
+              <RecordInfo>
+                <Field name="Model" size="1073741823" source="R-DATA:" type="V_WString" />
+                <Field name="ME" source="R-DATA:" type="Double" />
+                <Field name="RMSE" source="R-DATA:" type="Double" />
+                <Field name="MAE" source="R-DATA:" type="Double" />
+                <Field name="MPE" source="R-DATA:" type="Double" />
+                <Field name="MAPE" source="R-DATA:" type="Double" />
+                <Field name="MASE" source="R-DATA:" type="Double" />
+                <Field name="NA" source="R-DATA:" type="Double" />
+              </RecordInfo>
+            </MetaInfo>
+          </Properties>
+          <EngineSettings Macro="Predictive Tools\TS_Compare.yxmc" />
+        </Node>
+        <Node ToolID="20">
+          <GuiSettings Plugin="AlteryxBasePluginsGui.Sort.Sort">
+            <Position x="1159" y="751" />
+          </GuiSettings>
+          <Properties>
+            <Configuration>
+              <SortInfo locale="0">
+                <Field field="MAPE" order="Ascending" />
+              </SortInfo>
+            </Configuration>
+            <Annotation DisplayMode="0">
+              <Name />
+              <AnnotationText>Sort by MAPE ascending</AnnotationText>
+              <DefaultAnnotationText>MAPE - Ascending</DefaultAnnotationText>
+              <Left value="False" />
+            </Annotation>
+            <MetaInfo connection="Output">
+              <RecordInfo>
+                <Field name="Model" size="1073741823" source="R-DATA:" type="V_WString" />
+                <Field name="ME" source="R-DATA:" type="Double" />
+                <Field name="RMSE" source="R-DATA:" type="Double" />
+                <Field name="MAE" source="R-DATA:" type="Double" />
+                <Field name="MPE" source="R-DATA:" type="Double" />
+                <Field name="MAPE" source="R-DATA:" type="Double" />
+                <Field name="MASE" source="R-DATA:" type="Double" />
+                <Field name="NA" source="R-DATA:" type="Double" />
+              </RecordInfo>
+              <SortInfo locale="0">
+                <Field field="MAPE" order="Ascending" />
+              </SortInfo>
+            </MetaInfo>
+          </Properties>
+          <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxSort" />
+        </Node>
+        <Node ToolID="21">
+          <GuiSettings Plugin="AlteryxBasePluginsGui.Sample.Sample">
+            <Position x="1279" y="751" />
+          </GuiSettings>
+          <Properties>
+            <Configuration>
+              <Mode>First</Mode>
+              <N>1</N>
+              <GroupFields orderChanged="False" />
+            </Configuration>
+            <Annotation DisplayMode="0">
+              <Name />
+              <AnnotationText>Keep first row</AnnotationText>
+              <DefaultAnnotationText>First 1</DefaultAnnotationText>
+              <Left value="False" />
+            </Annotation>
+            <MetaInfo connection="Output">
+              <RecordInfo>
+                <Field name="Model" size="1073741823" source="R-DATA:" type="V_WString" />
+                <Field name="ME" source="R-DATA:" type="Double" />
+                <Field name="RMSE" source="R-DATA:" type="Double" />
+                <Field name="MAE" source="R-DATA:" type="Double" />
+                <Field name="MPE" source="R-DATA:" type="Double" />
+                <Field name="MAPE" source="R-DATA:" type="Double" />
+                <Field name="MASE" source="R-DATA:" type="Double" />
+                <Field name="NA" source="R-DATA:" type="Double" />
+              </RecordInfo>
+              <SortInfo locale="0">
+                <Field field="MAPE" order="Ascending" />
+              </SortInfo>
+            </MetaInfo>
+          </Properties>
+          <EngineSettings EngineDll="AlteryxBasePluginsEngine.dll" EngineDllEntryPoint="AlteryxSample" />
+        </Node>
+      </ChildNodes>
+    </Node>
+  </Nodes>
+  <Connections>
+    <Connection>
+      <Origin ToolID="3" Connection="Output" />
+      <Destination ToolID="4" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="4" Connection="Output" />
+      <Destination ToolID="6" Connection="Source" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="36" Connection="Output" />
+      <Destination ToolID="6" Connection="Targets" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="6" Connection="Output" />
+      <Destination ToolID="7" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="6" Connection="Output" />
+      <Destination ToolID="32" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="6" Connection="Output" />
+      <Destination ToolID="33" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="27" Connection="Join" />
+      <Destination ToolID="28" Connection="Input" />
+    </Connection>
+    <Connection name="#2">
+      <Origin ToolID="30" Connection="Action" />
+      <Destination ToolID="28" Connection="Action" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="28" Connection="Output" />
+      <Destination ToolID="31" Connection="Input" />
+    </Connection>
+    <Connection name="#1">
+      <Origin ToolID="29" Connection="Question" />
+      <Destination ToolID="30" Connection="Question" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="36" Connection="Output" />
+      <Destination ToolID="3" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="22" Connection="Output" />
+      <Destination ToolID="24" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="23" Connection="Output" />
+      <Destination ToolID="25" Connection="Input" />
+    </Connection>
+    <Connection name="#1">
+      <Origin ToolID="24" Connection="Output" />
+      <Destination ToolID="26" Connection="Input" />
+    </Connection>
+    <Connection name="#2">
+      <Origin ToolID="25" Connection="Output" />
+      <Destination ToolID="26" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="26" Connection="Output" />
+      <Destination ToolID="27" Connection="Left" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="21" Connection="Output" />
+      <Destination ToolID="27" Connection="Right" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="32" Connection="Output" />
+      <Destination ToolID="22" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="33" Connection="Output" />
+      <Destination ToolID="23" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="7" Connection="True" />
+      <Destination ToolID="11" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="7" Connection="True" />
+      <Destination ToolID="12" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="7" Connection="False" />
+      <Destination ToolID="17" Connection="Right Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="15" Connection="Output" />
+      <Destination ToolID="17" Connection="Left Input" />
+    </Connection>
+    <Connection name="#1">
+      <Origin ToolID="11" Connection="Output" />
+      <Destination ToolID="15" Connection="Input" />
+    </Connection>
+    <Connection name="#2">
+      <Origin ToolID="12" Connection="Output" />
+      <Destination ToolID="15" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="17" Connection="Output" />
+      <Destination ToolID="20" Connection="Input" />
+    </Connection>
+    <Connection>
+      <Origin ToolID="20" Connection="Output" />
+      <Destination ToolID="21" Connection="Input" />
+    </Connection>
+  </Connections>
+  <Properties>
+    <Memory default="True" />
+    <GlobalRecordLimit value="0" />
+    <TempFiles default="True" />
+    <Annotation on="True" includeToolName="False" />
+    <ConvErrorLimit value="10" />
+    <ConvErrorLimit_Stop value="False" />
+    <CancelOnError value="False" />
+    <DisableBrowse value="False" />
+    <EnablePerformanceProfiling value="False" />
+    <DisableAllOutput value="False" />
+    <ShowAllMacroMessages value="False" />
+    <ShowConnectionStatusIsOn value="True" />
+    <ShowConnectionStatusOnlyWhenRunning value="True" />
+    <ZoomLevel value="0" />
+    <LayoutType>Horizontal</LayoutType>
+    <Constants>
+      <Constant>
+        <Namespace>Question</Namespace>
+        <Name>ControlParam.Control Parameter (29)</Name>
+        <Value />
+        <IsNumeric value="False" />
+      </Constant>
+      <Constant>
+        <Namespace>Question</Namespace>
+        <Name>Macro Output (31)</Name>
+        <Value />
+        <IsNumeric value="False" />
+      </Constant>
+      <Constant>
+        <Namespace>Question</Namespace>
+        <Name>Macro Input (36)</Name>
+        <Value />
+        <IsNumeric value="False" />
+      </Constant>
+    </Constants>
+    <MetaInfo>
+      <NameIsFileName value="True" />
+      <Name>Challenge 94 Forecast Macro</Name>
+      <Description />
+      <RootToolName />
+      <ToolVersion />
+      <ToolInDb value="False" />
+      <CategoryName />
+      <SearchTags />
+      <Author />
+      <Company />
+      <Copyright />
+      <DescriptionLink actual="" displayed="" />
+      <Example>
+        <Description />
+        <File />
+      </Example>
+    </MetaInfo>
+    <Events>
+      <Enabled value="False" />
+    </Events>
+    <RuntimeProperties>
+      <Actions>
+        <NoCondition>
+          <Type>NoCondition</Type>
+          <Description>(Always Run)</Description>
+          <True>
+            <Action>
+              <Type>UpdateValue</Type>
+              <Description />
+              <ToolId value="30" />
+              <Mode>Simple</Mode>
+              <Variable />
+              <Replace value="True" />
+              <ReplaceText>Bakery</ReplaceText>
+              <Destination>28/FormulaFields/FormulaField/@expression</Destination>
+            </Action>
+          </True>
+        </NoCondition>
+      </Actions>
+      <Questions>
+        <Question>
+          <Type>Tab</Type>
+          <Description>Questions</Description>
+          <Name>Tab (2)</Name>
+          <ToolId value="2" />
+          <Questions>
+            <Question>
+              <Type>ControlParam</Type>
+              <Description>Control Parameter (29)</Description>
+              <Name>Control Parameter (29)</Name>
+              <ToolId value="29" />
+            </Question>
+            <Question>
+              <Type>MacroOutput</Type>
+              <Description>Macro Output (31)</Description>
+              <Name>Macro Output (31)</Name>
+              <ToolId value="31" />
+            </Question>
+            <Question>
+              <Type>MacroInput</Type>
+              <Description />
+              <Name>Macro Input (36)</Name>
+              <ToolId value="36" />
+            </Question>
+          </Questions>
+        </Question>
+      </Questions>
+      <ModuleType>Macro</ModuleType>
+      <MacroCustomHelp value="False" />
+      <MacroDynamicOutputFields value="False" />
+      <MacroImage>iVBORw0KGgoAAAANSUhEUgAAAKsAAACrCAYAAAAZ6GwZAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwgAADsIBFShKgAAAPKxJREFUeF7t3QewPUlVBvA1R4JZVxAEyYgBEFgJu2RQgkhahBVWQFSUuOyqKCCUgKBLFiWICpIECSIskgVBWMQABgwoWcw54li/rvquZ8e+4d13+73/w9dVX3XPTPfp06e/OdPT0zNz0sc//vHpqEL4r//6r5b+53/+5+k//uM/2j7xf//3f0//+Z//2WL4t3/7t+nf//3f2z7Hsw3S//Iv/9LiKlf44z/+4+kBD3jA9Lmf+7nTSSedNH3SJ33S9Mmf/MmLGOwPsv9TPuVTGrJP/Fmf9VnTWWedNf3Jn/xJ0yF1RXegn/3RMzrPgzYlyB87HDboRWdperNr0jXfNjjSZNVBOlRgJGmEk3Y8++STBsdTjgHhb//2b6c/+7M/m373d393et3rXjc96UlPmm5729tOV77yladLXepS0+d//udPn/Zpn/Z/SFm3e6iERlzbF7rQhabLXvay09d+7ddOt7vd7aanPOUp0+tf//rp937v96b3ve9909/8zd8s2ke36C6O7rV92Z99hw16hJhISz/pxPvBkSZrvI40Y6Tj0snVQNL2M+Y//dM/TX/4h384nXfeedNTn/rU6bu/+7unb/zGb5y++Iu/+P94xk/91E9tsM+xINviEHMZcpyckDaEVt7+L/mSL5muc53rTN/3fd83/fRP//T0yle+snlgnilEjP7inISCON7ssBEdQ9Sgl3evONJkZZh0ls5jpHRc9iWv8P73v396xjOeMX3v937vdOMb33j6iq/4igURQ5oQNGTNdshZ4dinf/qnL0gH9iUtT/YlDw9djwW1nLwXv/jFp5vd7GbTfe973+mZz3zm9Ad/8AetfZW49apR23qYoE8FPUG6l38vONJk1UEhZjqsGkb8j//4j9MLXvCC6du+7duma13rWtMXfdEXXYCgczj2GZ/xGY0wc0LZl/3yRU72JX/S8/2IipSJ53rYl3KOORHowuNf85rXnG5/+9tPz3ve81qb0sYQ+EQha3SpOrmS/b8nK4O47Os8l0vGEYxBGej7v//7p6/6qq+aPudzPmdBIp0fAgUhy2d+5mc2gtgXookdQx5kcpPE613jGteYbnnLW053utOdpjPPPHP6ju/4julud7vbdMYZZ0x3vOMdp9vc5jbTzW9+8+nrvu7rps/7vM9rMip5gzmhs28Ox+jmRu/Sl7709KM/+qOtnU7O3MScCMjJw/50+9d//dfphS984fSyl72sm38vOHJkrWcorxpvKv13f/d302/8xm+0cR9SIpZORrJKUtshRoAQyHDRi150+rIv+7J2c3WDG9ygjWef+9znTu95z3vaMOLv//7vmw41qJ8+6SiIjo7pODdObuLe8pa3TI94xCPaDZxx8sUudrHmOZHQCUEXukW/6M8b5zg97RNrK73+6q/+amGbXXixbaG92i/Qw/Dlute9bhty/cM//EPLs0y/dXofGbKGkLm0aJh9pn101K/8yq9Md7/73dudu06FdHDIWclgH7ixudrVrta84H3uc592mf3t3/7thWFT3yrQo4dVxndMez70oQ9N73jHO6Yf//Efbx751FNPna5whSs08tKVjolrO7TNfifZF37hF07f/u3f3m4YP/KRjzRvpn66q0dAIPXVE2lbkBn7p428u3ScB9j3qEc9qjkAuj/oQQ9qeeiRsvQR17LSVXZwwpM1RqY4YtrHCPYh1Itf/OLpHve4R/NQISnD8Do6VAz261jxl37pl063vvWtpx/4gR+Ynv3sZzdyks1A5JNteCFt3y46eI4QSV3pPCTjfV/72tc28t71rnedvv7rv75dIeju6qAthivaqC315PvyL//y6S53ucv0i7/4i8025LFVprwCdaWt2yInsTron3EpqA/e+c53Tle96lUX/WI4xtNGB8O3yIodHItt0gfBCU9WxmYQZEIaaY149atf3caHxo86Umchp46L99G56VDxta997emxj31sK2uy37BBHeSGLLZj9HrWV53mSJ45enkDbQhhxCFs9FD+Yx/72PS2t72tefvv+q7vajeH2oas2oS4IWvarp1sgrSvec1rFg8ctAUqAdbpuAzVXmSoI0RzXEDes88+u+mVk8tJR6/YmQzjbmllyZCutrAdHIlhAKVzWf7Lv/zL9kRJxzHAhS984cXTpSCEBTc3boB+/dd/ffqLv/iLNuaMF2UgIcRhJB0rnTidPNepgpxl6OUPQh5BWv6QKfts63gn1p//+Z9PP/uzP9tuGrUNUdkgba0nq/RXfuVXTj/8wz88ffjDH24yySBTu+IJqz6bgp1CqHhBJ9Zz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</MacroImage>
+      <MacroInputs />
+      <MacroOutputs />
+      <BatchMacro>
+        <OutputMode>AllSame</OutputMode>
+        <ControlParams>
+          <ControlParam>
+            <Name>Control Parameter (29)</Name>
+            <Description>Control Parameter (29)</Description>
+          </ControlParam>
+        </ControlParams>
+      </BatchMacro>
+      <Wiz_CustomHelp value="False" />
+      <Wiz_CustomGraphic value="False" />
+      <Wiz_ShowOutput value="True" />
+      <Wiz_OpenOutputTools>
+        <Tool ToolId="31" Selected="True" />
+        <Tool ToolId="22" Selected="True" />
+        <Tool ToolId="23" Selected="True" />
+        <Tool ToolId="32" Selected="True" />
+        <Tool ToolId="33" Selected="True" />
+        <Tool ToolId="11" Selected="True" />
+        <Tool ToolId="12" Selected="True" />
+        <Tool ToolId="17" Selected="True" />
+      </Wiz_OpenOutputTools>
+      <Wiz_OutputMessage />
+      <Wiz_NoOutputFilesMessage />
+      <Wiz_ChainRunWizard />
+    </RuntimeProperties>
+  </Properties>
+</AlteryxDocument>
